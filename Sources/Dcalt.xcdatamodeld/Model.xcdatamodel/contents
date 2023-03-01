@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="21513" systemVersion="22D68" minimumToolsVersion="Automatic" sourceLanguage="Swift" usedWithCloudKit="YES" userDefinedModelVersionIdentifier="">
+    <entity name="AppSetting" representedClassName="AppSetting" syncable="YES" codeGenerationType="class">
+        <attribute name="createdAt" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
+        <attribute name="startOfDay" optional="YES" attributeType="Integer 32" defaultValueString="10800" usesScalarValueType="YES"/>
+        <attribute name="targetCalories" optional="YES" attributeType="Integer 16" defaultValueString="2000" usesScalarValueType="YES"/>
+    </entity>
+    <entity name="MCategory" representedClassName="MCategory" syncable="YES" codeGenerationType="category">
+        <attribute name="archiveID" optional="YES" attributeType="UUID" usesScalarValueType="NO"/>
+        <attribute name="color" optional="YES" attributeType="Binary" valueTransformerName="ColorThemeValueTransformer"/>
+        <attribute name="createdAt" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
+        <attribute name="imageName" optional="YES" attributeType="String"/>
+        <attribute name="lastCalories" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="lastConsumedAt" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
+        <attribute name="name" optional="YES" attributeType="String"/>
+        <attribute name="userOrder" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
+        <relationship name="foodGroups" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="MFoodGroup" inverseName="category" inverseEntity="MFoodGroup"/>
+        <relationship name="servings" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="MServing" inverseName="category" inverseEntity="MServing"/>
+    </entity>
+    <entity name="MFoodGroup" representedClassName="MFoodGroup" syncable="YES" codeGenerationType="category">
+        <attribute name="createdAt" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
+        <attribute name="groupRaw" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="userOrder" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
+        <relationship name="category" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="MCategory" inverseName="foodGroups" inverseEntity="MCategory"/>
+    </entity>
+    <entity name="MServing" representedClassName="MServing" syncable="YES" codeGenerationType="category">
+        <attribute name="archiveID" optional="YES" attributeType="UUID" usesScalarValueType="NO"/>
+        <attribute name="calories" optional="YES" attributeType="Integer 16" defaultValueString="150" usesScalarValueType="YES"/>
+        <attribute name="createdAt" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
+        <attribute name="lastIntensity" optional="YES" attributeType="Float" defaultValueString="1" usesScalarValueType="YES"/>
+        <attribute name="name" optional="YES" attributeType="String"/>
+        <attribute name="userOrder" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="volume_mL" optional="YES" attributeType="Float" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="weight_g" optional="YES" attributeType="Float" defaultValueString="10" usesScalarValueType="YES"/>
+        <relationship name="category" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="MCategory" inverseName="servings" inverseEntity="MCategory"/>
+    </entity>
+    <entity name="ZCategory" representedClassName="ZCategory" syncable="YES" codeGenerationType="class">
+        <attribute name="categoryArchiveID" optional="YES" attributeType="UUID" usesScalarValueType="NO"/>
+        <attribute name="createdAt" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
+        <attribute name="name" optional="YES" attributeType="String"/>
+        <relationship name="zServings" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="ZServing" inverseName="zCategory" inverseEntity="ZServing"/>
+    </entity>
+    <entity name="ZDayRun" representedClassName="ZDayRun" syncable="YES" codeGenerationType="class">
+        <attribute name="calories" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="consumedDay" optional="YES" attributeType="String"/>
+        <attribute name="createdAt" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
+        <relationship name="zServingRuns" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="ZServingRun" inverseName="zDayRun" inverseEntity="ZServingRun"/>
+    </entity>
+    <entity name="ZServing" representedClassName="ZServing" syncable="YES" codeGenerationType="class">
+        <attribute name="createdAt" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
+        <attribute name="name" optional="YES" attributeType="String"/>
+        <attribute name="servingArchiveID" optional="YES" attributeType="UUID" usesScalarValueType="NO"/>
+        <relationship name="zCategory" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="ZCategory" inverseName="zServings" inverseEntity="ZCategory"/>
+        <relationship name="zServingRuns" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="ZServingRun" inverseName="zServing" inverseEntity="ZServingRun"/>
+    </entity>
+    <entity name="ZServingRun" representedClassName="ZServingRun" syncable="YES" codeGenerationType="class">
+        <attribute name="calories" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="consumedTime" optional="YES" attributeType="String"/>
+        <attribute name="createdAt" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
+        <attribute name="userRemoved" optional="YES" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES"/>
+        <relationship name="zDayRun" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="ZDayRun" inverseName="zServingRuns" inverseEntity="ZDayRun"/>
+        <relationship name="zServing" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="ZServing" inverseName="zServingRuns" inverseEntity="ZServing"/>
+    </entity>
+</model>
