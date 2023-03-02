@@ -15,7 +15,7 @@ import TrackerLib
 import XCTest
 
 open class TestBase: XCTestCase {
-    public var testPersistenceManager: CoreDataStack!
+    public var testCoreDataStack: CoreDataStack!
     public var testContainer: NSPersistentContainer!
     public var testContext: NSManagedObjectContext!
     public var mainStore: NSPersistentStore!
@@ -25,11 +25,11 @@ open class TestBase: XCTestCase {
 
     override open func setUpWithError() throws {
         try super.setUpWithError()
-        testPersistenceManager = CoreDataStack.getPreviewStack()
-        testContainer = testPersistenceManager.container
+        testCoreDataStack = CoreDataStack.getPreviewStack()
+        testContainer = testCoreDataStack.container
         testContext = testContainer.viewContext
 
-        mainStore = testPersistenceManager.getMainStore(testContext)
-        archiveStore = testPersistenceManager.getArchiveStore(testContext)
+        mainStore = testCoreDataStack.getMainStore(testContext)
+        archiveStore = testCoreDataStack.getArchiveStore(testContext)
     }
 }

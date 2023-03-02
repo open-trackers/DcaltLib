@@ -19,6 +19,11 @@ extension CoreDataStack: ObservableObject {}
 // where the Z* records on 'main' store eventually will be transferred
 // to the 'archive' store on iOS, to reduce watch storage needs.
 public final class CoreDataStack: BaseCoreDataStack {
+    static let modelName = "Dcalt"
+    static let baseFileName = "Dcalt"
+    static let cloudPrefix = "iCloud.org.openalloc.dcalt"
+    //static let archiveSuffix = "archive"
+
     #if os(watchOS)
         // NOTE the watch won't get the archive store
         let storeKeys = [StoreType.main.rawValue]
