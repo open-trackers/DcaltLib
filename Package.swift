@@ -9,16 +9,12 @@ let package = Package(name: "DcaltLib",
                                    targets: ["DcaltLib"]),
                       ],
                       dependencies: [
-                          // .package(url: "https://github.com/apple/swift-collections.git", from: "1.0.4"),
-                          .package(name: "TrackerLib", path: "../TrackerLib"),
-                          // .package(name: "ColorThemeLib", path: "../ColorThemeLib"),
+                        .package(url: "https://github.com/open-trackers/TrackerLib.git", from: "1.0.0"),
                       ],
                       targets: [
                           .target(name: "DcaltLib",
                                   dependencies: [
                                       .product(name: "TrackerLib", package: "TrackerLib"),
-                                      // .product(name: "ColorThemeLib", package: "ColorThemeLib"),
-                                      // .product(name: "Collections", package: "swift-collections"),
                                   ],
                                   path: "Sources",
                                   resources: [
@@ -28,7 +24,6 @@ let package = Package(name: "DcaltLib",
                                       dependencies: [
                                           "DcaltLib",
                                           .product(name: "TrackerLib", package: "TrackerLib"),
-                                          // .product(name: "ColorThemeLib", package: "ColorThemeLib"),
                                       ],
                                       path: "Tests"),
                       ])
