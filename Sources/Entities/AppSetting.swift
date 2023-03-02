@@ -73,12 +73,14 @@ extension AppSetting: Encodable {
     private enum CodingKeys: String, CodingKey, CaseIterable {
         case startOfDay
         case targetCalories
+        case createdAt
     }
 
     public func encode(to encoder: Encoder) throws {
         var c = encoder.container(keyedBy: CodingKeys.self)
         try c.encode(startOfDay, forKey: .startOfDay)
         try c.encode(targetCalories, forKey: .targetCalories)
+        try c.encode(createdAt, forKey: .createdAt)
     }
 }
 
@@ -90,5 +92,6 @@ extension AppSetting: MAttributable {
     public static var attributes: [MAttribute] = [
         MAttribute(CodingKeys.startOfDay, .int),
         MAttribute(CodingKeys.targetCalories, .int),
+        MAttribute(CodingKeys.createdAt, .date),
     ]
 }
