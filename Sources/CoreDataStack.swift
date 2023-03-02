@@ -22,7 +22,7 @@ public final class CoreDataStack: BaseCoreDataStack {
     static let modelName = "Dcalt"
     static let baseFileName = "Dcalt"
     static let cloudPrefix = "iCloud.org.openalloc.dcalt"
-    //static let archiveSuffix = "archive"
+    // static let archiveSuffix = "archive"
 
     #if os(watchOS)
         // NOTE the watch won't get the archive store

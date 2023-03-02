@@ -9,7 +9,7 @@ let package = Package(name: "DcaltLib",
                                    targets: ["DcaltLib"]),
                       ],
                       dependencies: [
-                        .package(url: "https://github.com/open-trackers/TrackerLib.git", from: "1.0.0"),
+                          .package(url: "https://github.com/open-trackers/TrackerLib.git", from: "1.0.0"),
                       ],
                       targets: [
                           .target(name: "DcaltLib",
