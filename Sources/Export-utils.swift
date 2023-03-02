@@ -21,8 +21,10 @@ import TrackerLib
         let entries: [(String, Data)] = [
             try makeDelimFile(AppSetting.self, context, format: format, inStore: mainStore),
             try makeDelimFile(MCategory.self, context, format: format, inStore: mainStore),
+            try makeDelimFile(MFoodGroup.self, context, format: format, inStore: mainStore),
             try makeDelimFile(MServing.self, context, format: format, inStore: mainStore),
 
+            try makeDelimFile(ZDayRun.self, context, format: format, inStore: archiveStore),
             try makeDelimFile(ZCategory.self, context, format: format, inStore: archiveStore),
             try makeDelimFile(ZServing.self, context, format: format, inStore: archiveStore),
             try makeDelimFile(ZServingRun.self, context, format: format, inStore: archiveStore),
