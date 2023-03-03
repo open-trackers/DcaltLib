@@ -35,7 +35,6 @@ public extension ZServing {
 }
 
 internal extension ZServing {
-    /// NOTE does NOT filter for the userRemoved attribute!
     static func getPredicate(categoryArchiveID: UUID,
                              servingArchiveID: UUID) -> NSPredicate
     {
