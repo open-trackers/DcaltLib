@@ -82,7 +82,7 @@ public extension ZCategory {
 }
 
 public extension ZCategory {
-    var servingsArray: [ZServing] {
+    var zServingsArray: [ZServing] {
         (zServings?.allObjects as? [ZServing]) ?? []
     }
 }

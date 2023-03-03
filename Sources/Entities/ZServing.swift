@@ -18,7 +18,7 @@ public extension ZServing {
     static func create(_ context: NSManagedObjectContext,
                        zCategory: ZCategory,
                        servingArchiveID: UUID,
-                       servingName: String = "New Serving",
+                       servingName: String? = nil,
                        createdAt: Date? = Date.now,
                        toStore: NSPersistentStore) -> ZServing
     {

@@ -24,7 +24,7 @@ extension ZCategory {
         var first: ZCategory?
         try context.fetcher(predicate: pred, sortDescriptors: sort, inStore: inStore) { (element: ZCategory) in
             if let _first = first {
-                for serving in element.servingsArray {
+                for serving in element.zServingsArray {
                     element.removeFromZServings(serving)
                     _first.addToZServings(serving)
                 }
