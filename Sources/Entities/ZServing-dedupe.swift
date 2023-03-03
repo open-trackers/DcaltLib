@@ -14,15 +14,6 @@ import CoreData
 import TrackerLib
 
 extension ZServing {
-    /// NOTE does NOT filter for the userRemoved attribute!
-    internal static func getPredicate(categoryArchiveID: UUID,
-                                      servingArchiveID: UUID) -> NSPredicate
-    {
-        NSPredicate(format: "zCategory.categoryArchiveID == %@ AND servingArchiveID == %@",
-                    categoryArchiveID.uuidString,
-                    servingArchiveID.uuidString)
-    }
-
     internal static func dedupe(_ context: NSManagedObjectContext,
                                 categoryArchiveID: UUID,
                                 servingArchiveID: UUID,

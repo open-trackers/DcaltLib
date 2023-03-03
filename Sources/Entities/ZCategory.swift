@@ -49,7 +49,7 @@ public extension ZCategory {
                     categoryArchiveID: UUID,
                     inStore: NSPersistentStore) throws -> ZCategory?
     {
-        let pred = NSPredicate(format: "categoryArchiveID == %@", categoryArchiveID.uuidString)
+        let pred = getPredicate(categoryArchiveID: categoryArchiveID)
         return try context.firstFetcher(predicate: pred, inStore: inStore)
     }
 
@@ -81,6 +81,12 @@ public extension ZCategory {
     }
 }
 
+internal extension ZCategory {
+    static func getPredicate(categoryArchiveID: UUID) -> NSPredicate {
+        NSPredicate(format: "categoryArchiveID == %@", categoryArchiveID.uuidString)
+    }
+}
+
 public extension ZCategory {
     var zServingsArray: [ZServing] {
         (zServings?.allObjects as? [ZServing]) ?? []
@@ -103,11 +109,6 @@ public extension ZCategory {
         // NOTE: wasn't working due to conflict errors, possibly due to to cascading delete?
         // try context.deleter(ZRoutineRun.self, predicate: pred, inStore: inStore)
     }
-
-//    internal static func getPredicate(categoryArchiveID: UUID) -> NSPredicate {
-//        NSPredicate(format: "zCategory.categoryArchiveID == %@",
-//                    categoryArchiveID.uuidString)
-//    }
 }
 
 extension ZCategory {

@@ -14,16 +14,6 @@ import CoreData
 import TrackerLib
 
 extension ZServingRun {
-    /// NOTE does NOT filter for the userRemoved attribute!
-    internal static func getPredicate(servingArchiveID: UUID,
-                                      consumedDay: String,
-                                      consumedTime: String) -> NSPredicate
-    {
-        NSPredicate(format: "zServing.servingArchiveID == %@ AND zDayRun.consumedDay == %@ AND consumedTime == %@",
-                    servingArchiveID.uuidString,
-                    consumedDay, consumedTime)
-    }
-
     internal static func dedupe(_ context: NSManagedObjectContext,
                                 servingArchiveID: UUID,
                                 consumedDay: String,

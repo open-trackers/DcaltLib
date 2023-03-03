@@ -14,10 +14,6 @@ import CoreData
 import TrackerLib
 
 extension MCategory {
-    internal static func getPredicate(archiveID: UUID) -> NSPredicate {
-        NSPredicate(format: "archiveID == %@", archiveID.uuidString)
-    }
-
     internal static func dedupe(_ context: NSManagedObjectContext, archiveID: UUID) throws {
         let pred = getPredicate(archiveID: archiveID)
         let sort = [NSSortDescriptor(keyPath: \MCategory.createdAt, ascending: true)]

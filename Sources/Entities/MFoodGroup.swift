@@ -32,9 +32,10 @@ public extension MFoodGroup {
         nu.groupRaw = groupRaw
         return nu
     }
+}
 
-//    var wrappedName: String {
-//        get { name ?? "unknown" }
-//        set { name = newValue }
-//    }
+internal extension MFoodGroup {
+    static func getPredicate(categoryArchiveID: UUID, groupRaw: Int16) -> NSPredicate {
+        NSPredicate(format: "category.archiveID == %@ AND groupRaw == %i", categoryArchiveID.uuidString, groupRaw)
+    }
 }

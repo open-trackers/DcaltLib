@@ -62,6 +62,12 @@ public extension MCategory {
     }
 }
 
+internal extension MCategory {
+    static func getPredicate(archiveID: UUID) -> NSPredicate {
+        NSPredicate(format: "archiveID == %@", archiveID.uuidString)
+    }
+}
+
 public extension MCategory {
     var servingsArray: [MServing] {
         (servings?.allObjects as? [MServing]) ?? []

@@ -39,7 +39,21 @@ public extension ZServingRun {
         context.assign(nu, to: toStore)
         return nu
     }
+}
 
+internal extension ZServingRun {
+    /// NOTE does NOT filter for the userRemoved attribute!
+    static func getPredicate(servingArchiveID: UUID,
+                             consumedDay: String,
+                             consumedTime: String) -> NSPredicate
+    {
+        NSPredicate(format: "zServing.servingArchiveID == %@ AND zDayRun.consumedDay == %@ AND consumedTime == %@",
+                    servingArchiveID.uuidString,
+                    consumedDay, consumedTime)
+    }
+}
+
+public extension ZServingRun {
     /// Shallow copy of self to specified store, returning newly copied record (residing in dstStore).
     /// Does not delete self.
     /// Does NOT save context.

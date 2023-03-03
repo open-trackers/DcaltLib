@@ -14,10 +14,6 @@ import CoreData
 import TrackerLib
 
 extension MFoodGroup {
-    internal static func getPredicate(categoryArchiveID: UUID, groupRaw: Int16) -> NSPredicate {
-        NSPredicate(format: "category.archiveID == %@ AND groupRaw == %i", categoryArchiveID.uuidString, groupRaw)
-    }
-
     internal static func dedupe(_ context: NSManagedObjectContext,
                                 categoryArchiveID: UUID,
                                 groupRaw: Int16) throws

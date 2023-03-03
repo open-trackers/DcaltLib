@@ -13,10 +13,6 @@ import CoreData
 import TrackerLib
 
 public extension ZDayRun {
-    var wrappedConsumedDay: String { consumedDay ?? "" }
-}
-
-public extension ZDayRun {
     // NOTE: does NOT save context
     static func create(_ context: NSManagedObjectContext,
                        consumedDay: String, // "2022-02-03" format
@@ -31,7 +27,19 @@ public extension ZDayRun {
         context.assign(nu, to: toStore)
         return nu
     }
+}
 
+internal extension ZDayRun {
+    static func getPredicate(consumedDay: String) -> NSPredicate {
+        NSPredicate(format: "consumedDay == %@", consumedDay)
+    }
+}
+
+public extension ZDayRun {
+    var wrappedConsumedDay: String { consumedDay ?? "" }
+}
+
+public extension ZDayRun {
     /// Shallow copy of self to specified store, returning newly copied record (residing in dstStore).
     /// Does not delete self.
     /// Does NOT save context.

@@ -14,10 +14,6 @@ import CoreData
 import TrackerLib
 
 extension ZDayRun {
-    internal static func getPredicate(consumedDay: String) -> NSPredicate {
-        NSPredicate(format: "consumedDay == %@", consumedDay)
-    }
-
     internal static func dedupe(_ context: NSManagedObjectContext,
                                 consumedDay: String,
                                 inStore: NSPersistentStore) throws

@@ -14,10 +14,6 @@ import CoreData
 import TrackerLib
 
 extension MServing {
-    internal static func getPredicate(categoryArchiveID: UUID, servingArchiveID: UUID) -> NSPredicate {
-        NSPredicate(format: "category.archiveID == %@ AND archiveID == %@", categoryArchiveID.uuidString, servingArchiveID.uuidString)
-    }
-
     internal static func dedupe(_ context: NSManagedObjectContext, categoryArchiveID: UUID, servingArchiveID: UUID) throws {
         let pred = getPredicate(categoryArchiveID: categoryArchiveID, servingArchiveID: servingArchiveID)
         let sort = [NSSortDescriptor(keyPath: \MServing.createdAt, ascending: true)]

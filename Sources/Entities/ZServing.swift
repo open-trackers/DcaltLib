@@ -32,7 +32,20 @@ public extension ZServing {
         // }
         return nu
     }
+}
 
+internal extension ZServing {
+    /// NOTE does NOT filter for the userRemoved attribute!
+    static func getPredicate(categoryArchiveID: UUID,
+                             servingArchiveID: UUID) -> NSPredicate
+    {
+        NSPredicate(format: "zCategory.categoryArchiveID == %@ AND servingArchiveID == %@",
+                    categoryArchiveID.uuidString,
+                    servingArchiveID.uuidString)
+    }
+}
+
+public extension ZServing {
     /// Shallow copy of self to specified store, returning newly copied record (residing in dstStore).
     /// NOTE assumes that category is in dstStore.
     /// Does not delete self.
@@ -58,7 +71,7 @@ public extension ZServing {
                     servingArchiveID: UUID,
                     inStore: NSPersistentStore) throws -> ZServing?
     {
-        let pred = NSPredicate(format: "zCategory.categoryArchiveID = %@ AND servingArchiveID == %@", categoryArchiveID.uuidString, servingArchiveID.uuidString)
+        let pred = getPredicate(categoryArchiveID: categoryArchiveID, servingArchiveID: servingArchiveID)
         return try context.firstFetcher(predicate: pred, inStore: inStore)
     }
 
@@ -67,8 +80,8 @@ public extension ZServing {
                     servingArchiveID: UUID,
                     inStore: NSPersistentStore) throws -> ZServing?
     {
-        let pred = NSPredicate(format: "zCategory == %@ AND servingArchiveID == %@", zCategory, servingArchiveID.uuidString)
-        return try context.firstFetcher(predicate: pred, inStore: inStore)
+        guard let categoryArchiveID = zCategory.categoryArchiveID else { return nil }
+        return try get(context, categoryArchiveID: categoryArchiveID, servingArchiveID: servingArchiveID, inStore: inStore)
     }
 
     /// Fetch a ZServing record in the specified store, creating if necessary.

@@ -38,3 +38,9 @@ public extension MServing {
         set { name = newValue }
     }
 }
+
+internal extension MServing {
+    static func getPredicate(categoryArchiveID: UUID, servingArchiveID: UUID) -> NSPredicate {
+        NSPredicate(format: "category.archiveID == %@ AND archiveID == %@", categoryArchiveID.uuidString, servingArchiveID.uuidString)
+    }
+}
