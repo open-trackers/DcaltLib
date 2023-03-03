@@ -108,8 +108,8 @@ internal func deepCopy(_ context: NSManagedObjectContext,
 
         let dDayRun = try sDayRun.shallowCopy(context, toStore: dstStore)
 
-        // NOTE: including the userRemoved==1, as we need to reflect removed records in the archive
-        // (which may have been previously copied as userRemoved=0)
+        // NOTE: including even those ZServingRun records with userRemoved==1, as we need to reflect
+        // removed records in the archive (which may have been previously copied as userRemoved=0)
         let dayRunPred = NSPredicate(format: "zDayRun == %@", sDayRun)
 
         try context.fetcher(predicate: dayRunPred, inStore: srcStore) { (sServingRun: ZServingRun) in
