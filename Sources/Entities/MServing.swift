@@ -35,10 +35,6 @@ public extension MServing {
         return nu
     }
 
-    static func get(_ context: NSManagedObjectContext, forURIRepresentation url: URL) -> MServing? {
-        NSManagedObject.get(context, forURIRepresentation: url) as? MServing
-    }
-
     var wrappedName: String {
         get { name ?? "unknown" }
         set { name = newValue }

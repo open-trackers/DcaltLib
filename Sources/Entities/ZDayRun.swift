@@ -56,10 +56,6 @@ public extension ZDayRun {
         return try context.firstFetcher(predicate: pred, inStore: inStore)
     }
 
-    static func get(_ context: NSManagedObjectContext, forURIRepresentation url: URL) -> ZDayRun? {
-        NSManagedObject.get(context, forURIRepresentation: url) as? ZDayRun
-    }
-
     /// Fetch a ZDayRun record in the specified store, creating if necessary.
     /// Will update calories on existing record.
     /// NOTE: does NOT save context

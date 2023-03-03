@@ -35,10 +35,6 @@ public extension MCategory {
         return nu
     }
 
-    static func get(_ context: NSManagedObjectContext, forURIRepresentation url: URL) -> MCategory? {
-        NSManagedObject.get(context, forURIRepresentation: url) as? MCategory
-    }
-
     static func get(_ context: NSManagedObjectContext,
                     archiveID: UUID) throws -> MCategory?
     {

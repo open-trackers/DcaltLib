@@ -33,10 +33,6 @@ public extension MFoodGroup {
         return nu
     }
 
-    static func get(_ context: NSManagedObjectContext, forURIRepresentation url: URL) -> MFoodGroup? {
-        NSManagedObject.get(context, forURIRepresentation: url) as? MFoodGroup
-    }
-
 //    var wrappedName: String {
 //        get { name ?? "unknown" }
 //        set { name = newValue }
