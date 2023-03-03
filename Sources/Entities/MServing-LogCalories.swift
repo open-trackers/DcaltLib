@@ -75,20 +75,23 @@ public extension MServing {
 
         let zCategory = try ZCategory.getOrCreate(context,
                                                   categoryArchiveID: categoryArchiveID,
-                                                  inStore: mainStore) { _, element in
+                                                  inStore: mainStore)
+        { _, element in
             element.name = categoryName
         }
 
         let zServing = try ZServing.getOrCreate(context,
                                                 zCategory: zCategory,
                                                 servingArchiveID: servingArchiveID,
-                                                inStore: mainStore) { _, element in
+                                                inStore: mainStore)
+        { _, element in
             element.name = servingName
         }
 
         let zDayRun = try ZDayRun.getOrCreate(context,
                                               consumedDay: consumedDay,
-                                              inStore: mainStore) { _, element in
+                                              inStore: mainStore)
+        { _, element in
             element.calories = 0
         }
 
@@ -96,7 +99,8 @@ public extension MServing {
                                         zDayRun: zDayRun,
                                         zServing: zServing,
                                         consumedTime: consumedTime,
-                                        inStore: mainStore) { _, element in
+                                        inStore: mainStore)
+        { _, element in
             element.calories = netCalories
         }
 

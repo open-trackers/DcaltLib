@@ -58,7 +58,8 @@ public extension ZServing {
         let nu = try ZServing.getOrCreate(context,
                                           zCategory: dstCategory,
                                           servingArchiveID: servingArchiveID,
-                                          inStore: dstStore) { _, element in
+                                          inStore: dstStore)
+        { _, element in
             element.name = wrappedName
             element.createdAt = createdAt
         }

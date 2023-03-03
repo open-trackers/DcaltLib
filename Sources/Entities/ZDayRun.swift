@@ -50,7 +50,8 @@ public extension ZDayRun {
         else { throw TrackerError.missingData(msg: "consumedDay; can't copy") }
         return try ZDayRun.getOrCreate(context,
                                        consumedDay: consumedDay,
-                                       inStore: dstStore) { _, element in
+                                       inStore: dstStore)
+        { _, element in
             element.calories = calories
             element.createdAt = createdAt
         }

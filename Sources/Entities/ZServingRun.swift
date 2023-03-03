@@ -68,7 +68,8 @@ public extension ZServingRun {
                                            zDayRun: dstDayRun,
                                            zServing: dstServing,
                                            consumedTime: consumedTime,
-                                           inStore: dstStore) { _, element in
+                                           inStore: dstStore)
+        { _, element in
             element.calories = calories
             element.createdAt = createdAt
             element.userRemoved = userRemoved

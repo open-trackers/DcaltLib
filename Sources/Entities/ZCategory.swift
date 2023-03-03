@@ -39,7 +39,8 @@ public extension ZCategory {
         else { throw TrackerError.missingData(msg: "categoryArchiveID; can't copy") }
         return try ZCategory.getOrCreate(context,
                                          categoryArchiveID: categoryArchiveID,
-                                         inStore: dstStore) { _, element in
+                                         inStore: dstStore)
+        { _, element in
             element.name = wrappedName
             element.createdAt = createdAt
         }
