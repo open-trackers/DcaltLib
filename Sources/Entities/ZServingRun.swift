@@ -183,6 +183,22 @@ public extension ZServingRun {
         // NOTE: wasn't working due to conflict errors, possibly due to to cascading delete?
         // try context.deleter(ZServingRun.self, predicate: pred, inStore: inStore)
     }
+
+    /// Like a delete, but allows the mirroring to archive and iCloud to properly
+    /// reflect that the user 'deleted' the record(s) from the store(s).
+    static func userRemove(_ context: NSManagedObjectContext,
+                           servingArchiveID: UUID,
+                           consumedDay: String,
+                           consumedTime: String,
+                           inStore: NSPersistentStore? = nil) throws
+    {
+        let pred = getPredicate(servingArchiveID: servingArchiveID, consumedDay: consumedDay, consumedTime: consumedTime)
+
+        try context.fetcher(predicate: pred, inStore: inStore) { (element: ZServingRun) in
+            element.userRemoved = true
+            return true
+        }
+    }
 }
 
 extension ZServingRun {
