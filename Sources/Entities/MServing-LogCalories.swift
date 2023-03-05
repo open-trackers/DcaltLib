@@ -93,6 +93,7 @@ public extension MServing {
                                               inStore: mainStore)
         { _, element in
             element.calories = 0
+            element.userRemoved = false // removal may have happened on another device; we're reversing it
         }
 
         _ = try ZServingRun.getOrCreate(context,

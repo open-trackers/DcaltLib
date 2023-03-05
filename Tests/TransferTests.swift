@@ -123,4 +123,22 @@ final class TransferTests: TestBase {
         XCTAssertNotNil(try ZServingRun.get(testContext, servingArchiveID: servingArchiveID, consumedDay: consumedDay, consumedTime: consumedTime5, inStore: archiveStore))
         XCTAssertNotNil(try ZServingRun.get(testContext, servingArchiveID: servingArchiveID, consumedDay: consumedDay, consumedTime: consumedTime7, inStore: archiveStore))
     }
+
+    func testIncludesCopyOfDayRunWhereUserRemoved() throws {
+        let consumedDay = "2022-12-20"
+        let dr = ZDayRun.create(testContext, consumedDay: consumedDay, calories: 2392, toStore: mainStore)
+        dr.userRemoved = true
+        try testContext.save()
+
+        XCTAssertNotNil(try ZDayRun.get(testContext, consumedDay: consumedDay, inStore: mainStore))
+
+        try transferToArchive(testContext, mainStore: mainStore, archiveStore: archiveStore, startOfDay: startOfDay, now: now, tz: tz)
+        try testContext.save()
+
+        guard let ddr = try ZDayRun.get(testContext, consumedDay: consumedDay, inStore: archiveStore)
+        else { XCTFail(); return }
+
+        XCTAssertNotNil(ddr)
+        XCTAssertTrue(ddr.userRemoved)
+    }
 }

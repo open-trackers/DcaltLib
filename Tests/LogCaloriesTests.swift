@@ -1,5 +1,5 @@
 //
-//  logConsumptionTests.swift
+//  LogCaloriesTests.swift
 //
 // Copyright 2023  OpenAlloc LLC
 //
@@ -15,7 +15,7 @@ import TrackerLib
 @testable import DcaltLib
 import XCTest
 
-final class LogConsumptionTests: TestBase {
+final class LogCaloriesTests: TestBase {
     let categoryArchiveID = UUID()
     let serving1ArchiveID = UUID()
     let serving2ArchiveID = UUID()
@@ -197,5 +197,38 @@ final class LogConsumptionTests: TestBase {
         XCTAssertEqual(consumedDay2, zer2?.zDayRun?.consumedDay)
         XCTAssertEqual(consumedTime2, zer2?.consumedTime)
         XCTAssertEqual(calories2, zer2?.calories)
+    }
+
+    func testRestoreDayRunAfterUserLogsServing() throws {
+        let r = MCategory.create(testContext, name: "bleh", userOrder: 77, archiveID: categoryArchiveID)
+        let e1 = MServing.create(testContext, category: r, userOrder: userOrder1, name: "bleep", archiveID: serving1ArchiveID)
+        e1.calories = calories1
+        try testContext.save()
+
+        try e1.logCalories(testContext, mainStore: mainStore, now: day1, tz: tz)
+        try testContext.save()
+
+        guard let zrr1 = try ZDayRun.get(testContext, consumedDay: consumedDay1, inStore: mainStore)
+        else { XCTFail(); return }
+        XCTAssertEqual(calories1, zrr1.calories)
+
+        // user removes ZDayRun (possibly from different device)
+
+        zrr1.userRemoved = true
+        try testContext.save()
+
+        // user completes serving (possibly from different device)
+
+        let e2 = MServing.create(testContext, category: r, userOrder: userOrder2, name: "blort", archiveID: serving1ArchiveID)
+        e2.calories = calories2
+        try e2.logCalories(testContext, mainStore: mainStore, now: day1, tz: tz)
+        try testContext.save()
+
+        guard let zrr2 = try ZDayRun.get(testContext, consumedDay: consumedDay1, inStore: mainStore)
+        else { XCTFail(); return }
+
+        // ensure that ZDayRun has been restored from the userRemove (possibly on another device)
+        XCTAssertFalse(zrr2.userRemoved)
+        XCTAssertEqual(calories2, zrr1.calories) // assume calories1 was cascaded
     }
 }

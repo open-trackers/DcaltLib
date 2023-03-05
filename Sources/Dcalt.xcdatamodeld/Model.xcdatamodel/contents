@@ -44,6 +44,7 @@
         <attribute name="calories" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
         <attribute name="consumedDay" optional="YES" attributeType="String"/>
         <attribute name="createdAt" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
+        <attribute name="userRemoved" optional="YES" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES"/>
         <relationship name="zServingRuns" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="ZServingRun" inverseName="zDayRun" inverseEntity="ZServingRun"/>
     </entity>
     <entity name="ZServing" representedClassName="ZServing" syncable="YES" codeGenerationType="class">

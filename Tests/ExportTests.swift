@@ -110,6 +110,25 @@ final class ExportTests: TestBase {
         XCTAssertEqual(expected, actual)
     }
 
+    func testZDayRun() throws {
+        let dr = ZDayRun.create(testContext, consumedDay: consumedDay, calories: 2392, createdAt: createdAt, toStore: mainStore)
+        dr.userRemoved = true
+        try testContext.save()
+
+        let request = makeRequest(ZDayRun.self)
+        let results = try testContext.fetch(request)
+        let data = try exportData(results, format: .CSV)
+        guard let actual = String(data: data, encoding: .utf8) else { XCTFail(); return }
+
+        let expected = """
+        consumedDay,calories,userRemoved,createdAt
+        \(consumedDay!),2392,true,\(createdAtStr)
+
+        """
+
+        XCTAssertEqual(expected, actual)
+    }
+
     func testCategory() throws {
         let r = MCategory.create(testContext, name: "bleh", userOrder: 1, archiveID: categoryArchiveID, createdAt: createdAt)
         r.userOrder = userOrder

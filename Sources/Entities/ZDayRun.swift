@@ -54,6 +54,7 @@ public extension ZDayRun {
         { _, element in
             element.calories = calories
             element.createdAt = createdAt
+            element.userRemoved = userRemoved
         }
     }
 
@@ -93,19 +94,33 @@ public extension ZDayRun {
     }
 
     // for use in user delete of individual routine runs in UI, from both stores
-    static func delete(_ context: NSManagedObjectContext,
-                       consumedDay: String,
-                       inStore: NSPersistentStore? = nil) throws
+//    static func delete(_ context: NSManagedObjectContext,
+//                       consumedDay: String,
+//                       inStore: NSPersistentStore? = nil) throws
+//    {
+//        let pred = getPredicate(consumedDay: consumedDay)
+//
+//        try context.fetcher(predicate: pred, inStore: inStore) { (element: ZDayRun) in
+//            context.delete(element)
+//            return true
+//        }
+//
+//        // NOTE: wasn't working due to conflict errors, possibly due to to cascading delete?
+//        // try context.deleter(ZDayRun.self, predicate: pred, inStore: inStore)
+//    }
+
+    /// Like a delete, but allows the mirroring to archive and iCloud to properly
+    /// reflect that the user 'deleted' the record(s) from the store(s).
+    static func userRemove(_ context: NSManagedObjectContext,
+                           consumedDay: String,
+                           inStore: NSPersistentStore? = nil) throws
     {
         let pred = getPredicate(consumedDay: consumedDay)
 
         try context.fetcher(predicate: pred, inStore: inStore) { (element: ZDayRun) in
-            context.delete(element)
+            element.userRemoved = true
             return true
         }
-
-        // NOTE: wasn't working due to conflict errors, possibly due to to cascading delete?
-        // try context.deleter(ZDayRun.self, predicate: pred, inStore: inStore)
     }
 }
 
@@ -119,6 +134,10 @@ public extension ZDayRun {
     /// NOTE: does NOT save context
     /// Respects the 'userRemoved' flag.
     func updateCalories() {
+        if userRemoved {
+            calories = 0
+            return
+        }
         guard let servingRuns = zServingRuns?.allObjects as? [ZServingRun] else { return }
         calories = servingRuns.filter { !$0.userRemoved }.reduce(0) { $0 + $1.calories }
     }

@@ -179,4 +179,20 @@ final class ShallowCopyTests: TestBase {
         XCTAssertNotNil(dsr)
         XCTAssertTrue(dsr!.userRemoved)
     }
+
+    func testDayRunIncludesUserRemoved() throws {
+        let consumedAt = Date()
+        let (consumedDay, _) = splitDate(consumedAt)!
+        let sdr = ZDayRun.create(testContext, consumedDay: consumedDay, calories: 2392, createdAt: createdAt3, toStore: mainStore)
+        sdr.userRemoved = true
+        try testContext.save()
+
+        _ = try sdr.shallowCopy(testContext, toStore: archiveStore)
+        try testContext.save()
+        guard let ddr = try ZDayRun.get(testContext, consumedDay: consumedDay, inStore: archiveStore)
+        else { XCTFail(); return }
+
+        XCTAssertNotNil(ddr)
+        XCTAssertTrue(ddr.userRemoved)
+    }
 }

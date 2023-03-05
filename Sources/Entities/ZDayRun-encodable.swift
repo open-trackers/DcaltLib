@@ -16,6 +16,7 @@ extension ZDayRun: Encodable {
     private enum CodingKeys: String, CodingKey, CaseIterable {
         case consumedDay
         case calories
+        case userRemoved
         case createdAt
     }
 
@@ -23,6 +24,7 @@ extension ZDayRun: Encodable {
         var c = encoder.container(keyedBy: CodingKeys.self)
         try c.encode(consumedDay, forKey: .consumedDay)
         try c.encode(calories, forKey: .calories)
+        try c.encode(userRemoved, forKey: .userRemoved)
         try c.encode(createdAt, forKey: .createdAt)
     }
 }
@@ -35,6 +37,7 @@ extension ZDayRun: MAttributable {
     public static var attributes: [MAttribute] = [
         MAttribute(CodingKeys.consumedDay, .date),
         MAttribute(CodingKeys.calories, .int),
+        MAttribute(CodingKeys.userRemoved, .bool),
         MAttribute(CodingKeys.createdAt, .date),
     ]
 }
