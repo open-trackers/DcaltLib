@@ -111,6 +111,7 @@ public extension ZDayRun {
 
     /// Like a delete, but allows the mirroring to archive and iCloud to properly
     /// reflect that the user 'deleted' the record(s) from the store(s).
+    /// NOTE: does NOT save context.
     static func userRemove(_ context: NSManagedObjectContext,
                            consumedDay: String,
                            inStore: NSPersistentStore? = nil) throws
@@ -119,6 +120,16 @@ public extension ZDayRun {
 
         try context.fetcher(predicate: pred, inStore: inStore) { (element: ZDayRun) in
             element.userRemoved = true
+
+            // cascade down to its serving runs
+            try element.servingRunsArray.forEach {
+                guard let servingArchiveID = $0.zServing?.servingArchiveID,
+                      let consumedTime = $0.consumedTime
+                else { return }
+
+                try ZServingRun.userRemove(context, servingArchiveID: servingArchiveID, consumedDay: consumedDay, consumedTime: consumedTime)
+            }
+
             return true
         }
     }

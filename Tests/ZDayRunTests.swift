@@ -72,4 +72,30 @@ final class ZDayRunTests: TestBase {
 
         XCTAssertEqual(0, dr.calories)
     }
+
+    func testUserRemoveCascadesToServingRun() throws {
+        let consumedDay = "2022-12-20"
+        let consumedTime = "16:03"
+        let c = ZCategory.create(testContext, categoryArchiveID: categoryArchiveID, categoryName: "blah", toStore: mainStore)
+        let s = ZServing.create(testContext, zCategory: c, servingArchiveID: servingArchiveID, servingName: "bleh", toStore: mainStore)
+        let dr1 = ZDayRun.create(testContext, consumedDay: consumedDay, calories: 2392, toStore: mainStore)
+        let sr1 = ZServingRun.create(testContext, zDayRun: dr1, zServing: s, consumedTime: consumedTime, calories: 3, toStore: mainStore)
+        try testContext.save()
+
+        XCTAssertFalse(dr1.userRemoved)
+        XCTAssertFalse(sr1.userRemoved)
+
+        try ZDayRun.userRemove(testContext, consumedDay: consumedDay)
+        try testContext.save()
+
+        guard let dr2 = try ZDayRun.get(testContext, consumedDay: consumedDay, inStore: mainStore)
+        else { XCTFail(); return }
+
+        XCTAssertTrue(dr2.userRemoved)
+
+        guard let sr2 = try ZServingRun.get(testContext, servingArchiveID: servingArchiveID, consumedDay: consumedDay, consumedTime: consumedTime, inStore: mainStore)
+        else { XCTFail(); return }
+
+        XCTAssertTrue(sr2.userRemoved)
+    }
 }

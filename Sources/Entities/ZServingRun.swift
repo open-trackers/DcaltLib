@@ -186,6 +186,7 @@ public extension ZServingRun {
 
     /// Like a delete, but allows the mirroring to archive and iCloud to properly
     /// reflect that the user 'deleted' the record(s) from the store(s).
+    /// NOTE: does NOT save context.
     static func userRemove(_ context: NSManagedObjectContext,
                            servingArchiveID: UUID,
                            consumedDay: String,
