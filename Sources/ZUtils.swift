@@ -26,3 +26,44 @@ public func cleanLogRecords(_ context: NSManagedObjectContext, keepSinceDay: Str
 
     // TODO: delete orphaned ZServing and ZCategory
 }
+
+/// Ensure all the records have createdAts
+/// NOTE: does NOT save context
+public func updateCreatedAts(_ context: NSManagedObjectContext) throws {
+    let pred = NSPredicate(format: "createdAt == NULL")
+    try context.fetcher(predicate: pred) { (element: MCategory) in
+        if let _ = element.createdAt { return true }
+        element.createdAt = Date.now
+        return true
+    }
+    try context.fetcher(predicate: pred) { (element: MServing) in
+        if let _ = element.createdAt { return true }
+        element.createdAt = Date.now
+        return true
+    }
+    try context.fetcher(predicate: pred) { (element: ZServing) in
+        if let _ = element.createdAt { return true }
+        element.createdAt = Date.now
+        return true
+    }
+    try context.fetcher(predicate: pred) { (element: ZServingRun) in
+        if let _ = element.createdAt { return true }
+        element.createdAt = Date.now
+        return true
+    }
+    try context.fetcher(predicate: pred) { (element: ZCategory) in
+        if let _ = element.createdAt { return true }
+        element.createdAt = Date.now
+        return true
+    }
+    try context.fetcher(predicate: pred) { (element: ZDayRun) in
+        if let _ = element.createdAt { return true }
+        element.createdAt = Date.now
+        return true
+    }
+    try context.fetcher(predicate: pred) { (element: AppSetting) in
+        if let _ = element.createdAt { return true }
+        element.createdAt = Date.now
+        return true
+    }
+}

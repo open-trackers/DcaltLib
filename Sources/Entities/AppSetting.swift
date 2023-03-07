@@ -40,7 +40,8 @@ public extension AppSetting {
                             onUpdate: (Bool, AppSetting) -> Void = { _, _ in }) throws -> AppSetting
     {
         // obtain the earliest appSetting in case dupes exist
-        if let existing: AppSetting = try context.firstFetcher(sortDescriptors: earliestSort) {
+        let predicate = NSPredicate(format: "createdAt != nil")
+        if let existing: AppSetting = try context.firstFetcher(predicate: predicate, sortDescriptors: earliestSort) {
             onUpdate(true, existing)
             return existing
         } else {
