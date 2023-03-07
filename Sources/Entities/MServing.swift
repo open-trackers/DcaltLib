@@ -44,3 +44,14 @@ internal extension MServing {
         NSPredicate(format: "category.archiveID == %@ AND archiveID == %@", categoryArchiveID.uuidString, servingArchiveID.uuidString)
     }
 }
+
+public extension MServing {
+    var lastIntensityAt1: Bool {
+        lastIntensity.isEqual(to: 1.0, accuracy: 0.01)
+    }
+
+    var netCalories: Int {
+        guard lastIntensity > 0 else { return 0 }
+        return Int(Float(calories) * lastIntensity)
+    }
+}
