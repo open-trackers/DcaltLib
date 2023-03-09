@@ -32,43 +32,14 @@ public extension MCategory {
         nu.archiveID = archiveID
         return nu
     }
+}
 
-    static func get(_ context: NSManagedObjectContext,
-                    archiveID: UUID) throws -> MCategory?
-    {
-        let pred = getPredicate(archiveID: archiveID)
-        return try context.firstFetcher(predicate: pred)
-    }
-
-    /// Fetch a MCategory record, creating if necessary.
-    /// NOTE: does NOT save context
-    static func getOrCreate(_ context: NSManagedObjectContext,
-                            archiveID: UUID,
-                            onUpdate: (Bool, MCategory) -> Void = { _, _ in }) throws -> MCategory
-    {
-        if let existing = try MCategory.get(context, archiveID: archiveID) {
-            onUpdate(true, existing)
-            return existing
-        } else {
-            let nu = MCategory.create(context, archiveID: archiveID)
-            onUpdate(false, nu)
-            return nu
-        }
-    }
-
+public extension MCategory {
     var wrappedName: String {
         get { name ?? "unknown" }
         set { name = newValue }
     }
-}
 
-internal extension MCategory {
-    static func getPredicate(archiveID: UUID) -> NSPredicate {
-        NSPredicate(format: "archiveID == %@", archiveID.uuidString)
-    }
-}
-
-public extension MCategory {
     var servingsArray: [MServing] {
         (servings?.allObjects as? [MServing]) ?? []
     }
@@ -76,19 +47,7 @@ public extension MCategory {
     var foodGroupsArray: [MFoodGroup] {
         (foodGroups?.allObjects as? [MFoodGroup]) ?? []
     }
-}
 
-public extension MCategory {
-    static var servingSort: [NSSortDescriptor] {
-        [NSSortDescriptor(keyPath: \MServing.userOrder, ascending: true)]
-    }
-
-    var servingPredicate: NSPredicate {
-        NSPredicate(format: "category == %@", self)
-    }
-}
-
-public extension MCategory {
     var hasAtLeastOneServing: Bool {
         servings?.first != nil
     }

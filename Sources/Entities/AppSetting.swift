@@ -34,18 +34,4 @@ public extension AppSetting {
         nu.startOfDay = Int32(startOfDay.rawValue)
         return nu
     }
-
-    // NOTE: does NOT save context
-    static func getOrCreate(_ context: NSManagedObjectContext,
-                            onUpdate: (Bool, AppSetting) -> Void = { _, _ in }) throws -> AppSetting
-    {
-        if let existing: AppSetting = try context.firstFetcher(sortDescriptors: earliestSort) {
-            onUpdate(true, existing)
-            return existing
-        } else {
-            let nu = AppSetting.create(context) // w/defaults
-            onUpdate(false, nu)
-            return nu
-        }
-    }
 }

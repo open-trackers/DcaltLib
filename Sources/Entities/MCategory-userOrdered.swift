@@ -16,9 +16,7 @@ extension MCategory: UserOrdered {}
 
 public extension MCategory {
     static func maxUserOrder(_ context: NSManagedObjectContext) throws -> Int16? {
-        var sort: [NSSortDescriptor] {
-            [NSSortDescriptor(keyPath: \MCategory.userOrder, ascending: false)]
-        }
+        let sort = byUserOrder(ascending: false)
         let category: MCategory? = try context.firstFetcher(sortDescriptors: sort)
         return category?.userOrder
     }

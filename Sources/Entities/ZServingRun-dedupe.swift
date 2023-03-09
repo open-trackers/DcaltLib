@@ -23,7 +23,7 @@ extension ZServingRun {
         let pred = getPredicate(servingArchiveID: servingArchiveID,
                                 consumedDay: consumedDay,
                                 consumedTime: consumedTime)
-        let sort = [NSSortDescriptor(keyPath: \ZServingRun.createdAt, ascending: true)]
+        let sort = byCreatedAt()
         var first: ZServingRun?
         try context.fetcher(predicate: pred, sortDescriptors: sort, inStore: inStore) { (element: ZServingRun) in
             if first == nil {

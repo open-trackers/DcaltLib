@@ -45,50 +45,14 @@ public extension ZCategory {
             element.createdAt = createdAt
         }
     }
+}
 
-    static func get(_ context: NSManagedObjectContext,
-                    categoryArchiveID: UUID,
-                    inStore: NSPersistentStore) throws -> ZCategory?
-    {
-        let pred = getPredicate(categoryArchiveID: categoryArchiveID)
-        return try context.firstFetcher(predicate: pred, inStore: inStore)
-    }
-
-    /// Fetch a ZCategory record in the specified store, creating if necessary.
-    /// NOTE: does NOT save context
-    static func getOrCreate(_ context: NSManagedObjectContext,
-                            categoryArchiveID: UUID,
-                            inStore: NSPersistentStore,
-                            onUpdate: (Bool, ZCategory) -> Void = { _, _ in }) throws -> ZCategory
-    {
-        if let existing = try ZCategory.get(context,
-                                            categoryArchiveID: categoryArchiveID,
-                                            inStore: inStore)
-        {
-            onUpdate(true, existing)
-            return existing
-        } else {
-            let nu = ZCategory.create(context,
-                                      categoryArchiveID: categoryArchiveID,
-                                      toStore: inStore)
-            onUpdate(false, nu)
-            return nu
-        }
-    }
-
+public extension ZCategory {
     var wrappedName: String {
         get { name ?? "unknown" }
         set { name = newValue }
     }
-}
 
-internal extension ZCategory {
-    static func getPredicate(categoryArchiveID: UUID) -> NSPredicate {
-        NSPredicate(format: "categoryArchiveID == %@", categoryArchiveID.uuidString)
-    }
-}
-
-public extension ZCategory {
     var zServingsArray: [ZServing] {
         (zServings?.allObjects as? [ZServing]) ?? []
     }
@@ -101,8 +65,8 @@ public extension ZCategory {
                        inStore: NSPersistentStore? = nil) throws
     {
         let pred = getPredicate(categoryArchiveID: categoryArchiveID)
-
-        try context.fetcher(predicate: pred, inStore: inStore) { (element: ZCategory) in
+        let sort = byCreatedAt()
+        try context.fetcher(predicate: pred, sortDescriptors: sort, inStore: inStore) { (element: ZCategory) in
             context.delete(element)
             return true
         }

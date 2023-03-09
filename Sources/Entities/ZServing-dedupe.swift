@@ -20,7 +20,7 @@ extension ZServing {
                                 inStore: NSPersistentStore) throws
     {
         let pred = getPredicate(categoryArchiveID: categoryArchiveID, servingArchiveID: servingArchiveID)
-        let sort = [NSSortDescriptor(keyPath: \ZServing.createdAt, ascending: true)]
+        let sort = byCreatedAt()
         var first: ZServing?
         try context.fetcher(predicate: pred, sortDescriptors: sort, inStore: inStore) { (element: ZServing) in
 

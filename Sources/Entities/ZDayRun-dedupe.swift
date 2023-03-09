@@ -19,7 +19,7 @@ extension ZDayRun {
                                 inStore: NSPersistentStore) throws
     {
         let pred = getPredicate(consumedDay: consumedDay)
-        let sort = [NSSortDescriptor(keyPath: \ZDayRun.createdAt, ascending: true)]
+        let sort = byCreatedAt()
         var first: ZDayRun?
         try context.fetcher(predicate: pred, sortDescriptors: sort, inStore: inStore) { (element: ZDayRun) in
 

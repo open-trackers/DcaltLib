@@ -19,7 +19,7 @@ extension MFoodGroup {
                                 groupRaw: Int16) throws
     {
         let pred = getPredicate(categoryArchiveID: categoryArchiveID, groupRaw: groupRaw)
-        let sort = [NSSortDescriptor(keyPath: \MFoodGroup.createdAt, ascending: true)]
+        let sort = byCreatedAt()
         var first: MFoodGroup?
         try context.fetcher(predicate: pred, sortDescriptors: sort) { (element: MFoodGroup) in
             if first == nil {

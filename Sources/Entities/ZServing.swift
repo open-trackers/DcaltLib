@@ -27,20 +27,8 @@ public extension ZServing {
         nu.servingArchiveID = servingArchiveID
         nu.createdAt = createdAt
         nu.name = servingName
-        // if let toStore {
         context.assign(nu, to: toStore)
-        // }
         return nu
-    }
-}
-
-internal extension ZServing {
-    static func getPredicate(categoryArchiveID: UUID,
-                             servingArchiveID: UUID) -> NSPredicate
-    {
-        NSPredicate(format: "zCategory.categoryArchiveID == %@ AND servingArchiveID == %@",
-                    categoryArchiveID.uuidString,
-                    servingArchiveID.uuidString)
     }
 }
 
@@ -65,57 +53,14 @@ public extension ZServing {
         }
         return nu
     }
+}
 
-    static func get(_ context: NSManagedObjectContext,
-                    categoryArchiveID: UUID,
-                    servingArchiveID: UUID,
-                    inStore: NSPersistentStore) throws -> ZServing?
-    {
-        let pred = getPredicate(categoryArchiveID: categoryArchiveID, servingArchiveID: servingArchiveID)
-        return try context.firstFetcher(predicate: pred, inStore: inStore)
-    }
-
-    static func get(_ context: NSManagedObjectContext,
-                    zCategory: ZCategory,
-                    servingArchiveID: UUID,
-                    inStore: NSPersistentStore) throws -> ZServing?
-    {
-        guard let categoryArchiveID = zCategory.categoryArchiveID else { return nil }
-        return try get(context, categoryArchiveID: categoryArchiveID, servingArchiveID: servingArchiveID, inStore: inStore)
-    }
-
-    /// Fetch a ZServing record in the specified store, creating if necessary.
-    /// NOTE: does NOT save context
-    static func getOrCreate(_ context: NSManagedObjectContext,
-                            zCategory: ZCategory,
-                            servingArchiveID: UUID,
-                            inStore: NSPersistentStore,
-                            onUpdate: (Bool, ZServing) -> Void = { _, _ in }) throws -> ZServing
-    {
-        if let existing = try ZServing.get(context,
-                                           zCategory: zCategory,
-                                           servingArchiveID: servingArchiveID,
-                                           inStore: inStore)
-        {
-            onUpdate(true, existing)
-            return existing
-        } else {
-            let nu = ZServing.create(context,
-                                     zCategory: zCategory,
-                                     servingArchiveID: servingArchiveID,
-                                     toStore: inStore)
-            onUpdate(false, nu)
-            return nu
-        }
-    }
-
+public extension ZServing {
     var wrappedName: String {
         get { name ?? "unknown" }
         set { name = newValue }
     }
-}
 
-public extension ZServing {
     var servingRunsArray: [ZServingRun] {
         (zServingRuns?.allObjects as? [ZServingRun]) ?? []
     }

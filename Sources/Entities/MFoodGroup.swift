@@ -33,9 +33,3 @@ public extension MFoodGroup {
         return nu
     }
 }
-
-internal extension MFoodGroup {
-    static func getPredicate(categoryArchiveID: UUID, groupRaw: Int16) -> NSPredicate {
-        NSPredicate(format: "category.archiveID == %@ AND groupRaw == %i", categoryArchiveID.uuidString, groupRaw)
-    }
-}

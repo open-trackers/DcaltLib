@@ -16,10 +16,8 @@ extension MServing: UserOrdered {}
 
 public extension MServing {
     static func maxUserOrder(_ context: NSManagedObjectContext, category: MCategory) throws -> Int16? {
-        var sort: [NSSortDescriptor] {
-            [NSSortDescriptor(keyPath: \MServing.userOrder, ascending: false)]
-        }
-        let pred = NSPredicate(format: "category == %@", category)
+        let sort = byUserOrder(ascending: false)
+        let pred = getPredicate(category: category)
         let serving: MServing? = try context.firstFetcher(predicate: pred, sortDescriptors: sort)
         return serving?.userOrder
     }

@@ -40,7 +40,7 @@ final class DeleteLogRecordTests: TestBase {
         XCTAssertNotNil(try ZServingRun.get(testContext, servingArchiveID: servingArchiveID, consumedDay: consumedDay, consumedTime: consumedTime, inStore: mainStore))
         XCTAssertNotNil(try ZServingRun.get(testContext, servingArchiveID: servingArchiveID, consumedDay: consumedDay, consumedTime: consumedTime, inStore: archiveStore))
 
-        try ZServingRun.delete(testContext, servingArchiveID: servingArchiveID, consumedAt: consumedAt, inStore: nil)
+        try ZServingRun.userRemove(testContext, servingArchiveID: servingArchiveID, consumedDay: consumedDay, consumedTime: consumedTime, inStore: nil)
         try testContext.save()
 
         XCTAssertNotNil(try ZCategory.get(testContext, categoryArchiveID: categoryArchiveID, inStore: mainStore))
@@ -49,7 +49,9 @@ final class DeleteLogRecordTests: TestBase {
         XCTAssertNotNil(try ZServing.get(testContext, categoryArchiveID: categoryArchiveID, servingArchiveID: servingArchiveID, inStore: archiveStore))
         XCTAssertNotNil(try ZDayRun.get(testContext, consumedDay: consumedDay, inStore: mainStore))
         XCTAssertNotNil(try ZDayRun.get(testContext, consumedDay: consumedDay, inStore: archiveStore))
-        XCTAssertNil(try ZServingRun.get(testContext, servingArchiveID: servingArchiveID, consumedDay: consumedDay, consumedTime: consumedTime, inStore: mainStore))
-        XCTAssertNil(try ZServingRun.get(testContext, servingArchiveID: servingArchiveID, consumedDay: consumedDay, consumedTime: consumedTime, inStore: archiveStore))
+        let a = try ZServingRun.get(testContext, servingArchiveID: servingArchiveID, consumedDay: consumedDay, consumedTime: consumedTime, inStore: mainStore)
+        XCTAssertTrue(a!.userRemoved)
+        let b = try ZServingRun.get(testContext, servingArchiveID: servingArchiveID, consumedDay: consumedDay, consumedTime: consumedTime, inStore: archiveStore)
+        XCTAssertTrue(b!.userRemoved)
     }
 }

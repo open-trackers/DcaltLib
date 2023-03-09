@@ -16,7 +16,7 @@ import TrackerLib
 extension ZCategory {
     internal static func dedupe(_ context: NSManagedObjectContext, categoryArchiveID: UUID, inStore: NSPersistentStore) throws {
         let pred = getPredicate(categoryArchiveID: categoryArchiveID)
-        let sort = [NSSortDescriptor(keyPath: \ZCategory.createdAt, ascending: true)]
+        let sort = byCreatedAt()
         var first: ZCategory?
         try context.fetcher(predicate: pred, sortDescriptors: sort, inStore: inStore) { (element: ZCategory) in
             if let _first = first {

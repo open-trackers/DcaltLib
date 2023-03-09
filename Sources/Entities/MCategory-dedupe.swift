@@ -16,7 +16,7 @@ import TrackerLib
 extension MCategory {
     internal static func dedupe(_ context: NSManagedObjectContext, archiveID: UUID) throws {
         let pred = getPredicate(archiveID: archiveID)
-        let sort = [NSSortDescriptor(keyPath: \MCategory.createdAt, ascending: true)]
+        let sort = byCreatedAt()
         var first: MCategory?
         try context.fetcher(predicate: pred, sortDescriptors: sort) { (element: MCategory) in
             if let _first = first {

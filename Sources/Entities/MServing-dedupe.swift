@@ -16,7 +16,7 @@ import TrackerLib
 extension MServing {
     internal static func dedupe(_ context: NSManagedObjectContext, categoryArchiveID: UUID, servingArchiveID: UUID) throws {
         let pred = getPredicate(categoryArchiveID: categoryArchiveID, servingArchiveID: servingArchiveID)
-        let sort = [NSSortDescriptor(keyPath: \MServing.createdAt, ascending: true)]
+        let sort = byCreatedAt()
         var first: MServing?
         try context.fetcher(predicate: pred, sortDescriptors: sort) { (element: MServing) in
             if first == nil {

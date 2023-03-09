@@ -32,20 +32,14 @@ public extension MServing {
         nu.archiveID = archiveID
         return nu
     }
+}
 
+public extension MServing {
     var wrappedName: String {
         get { name ?? "unknown" }
         set { name = newValue }
     }
-}
 
-internal extension MServing {
-    static func getPredicate(categoryArchiveID: UUID, servingArchiveID: UUID) -> NSPredicate {
-        NSPredicate(format: "category.archiveID == %@ AND archiveID == %@", categoryArchiveID.uuidString, servingArchiveID.uuidString)
-    }
-}
-
-public extension MServing {
     var lastIntensityAt1: Bool {
         lastIntensity.isEqual(to: 1.0, accuracy: 0.01)
     }
