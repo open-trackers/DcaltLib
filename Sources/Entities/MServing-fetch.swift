@@ -34,7 +34,7 @@ public extension MServing {
     static func byUserOrder(ascending: Bool = true) -> [NSSortDescriptor] {
         [
             NSSortDescriptor(keyPath: \MServing.userOrder, ascending: ascending),
-            NSSortDescriptor(keyPath: \MServing.createdAt, ascending: ascending),
+            NSSortDescriptor(keyPath: \MServing.createdAt, ascending: true),
         ]
     }
 }

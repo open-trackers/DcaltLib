@@ -12,7 +12,11 @@ import CoreData
 
 import TrackerLib
 
-internal extension ZServing {
+public extension ZServing {
+    static func getPredicate(zCategory: ZCategory) -> NSPredicate {
+        NSPredicate(format: "zCategory == %@", zCategory)
+    }
+
     static func getPredicate(categoryArchiveID: UUID,
                              servingArchiveID: UUID) -> NSPredicate
     {

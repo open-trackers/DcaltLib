@@ -13,7 +13,11 @@ import CoreData
 
 import TrackerLib
 
-internal extension ZDayRun {
+public extension ZDayRun {
+    static func getPredicate(userRemoved: Bool) -> NSPredicate {
+        NSPredicate(format: "userRemoved == %@", NSNumber(value: userRemoved))
+    }
+
     static func getPredicate(consumedDay: String) -> NSPredicate {
         NSPredicate(format: "consumedDay == %@", consumedDay)
     }
@@ -23,6 +27,13 @@ public extension ZDayRun {
     static func byCreatedAt(ascending: Bool = true) -> [NSSortDescriptor] {
         [
             NSSortDescriptor(keyPath: \ZDayRun.createdAt, ascending: ascending),
+        ]
+    }
+
+    static func byConsumedDay(ascending: Bool = true) -> [NSSortDescriptor] {
+        [
+            NSSortDescriptor(keyPath: \ZDayRun.consumedDay, ascending: ascending),
+            NSSortDescriptor(keyPath: \ZDayRun.createdAt, ascending: true),
         ]
     }
 }

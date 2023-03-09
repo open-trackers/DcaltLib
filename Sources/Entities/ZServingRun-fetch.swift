@@ -13,7 +13,17 @@ import CoreData
 
 import TrackerLib
 
-internal extension ZServingRun {
+public extension ZServingRun {
+    static func getPredicate(zDayRun: ZDayRun) -> NSPredicate {
+        NSPredicate(format: "zDayRun == %@", zDayRun)
+    }
+
+    static func getPredicate(zDayRun: ZDayRun,
+                             userRemoved: Bool) -> NSPredicate
+    {
+        NSPredicate(format: "zDayRun == %@ AND userRemoved == %@", zDayRun, NSNumber(value: userRemoved))
+    }
+
     /// NOTE does NOT filter for the userRemoved attribute!
     static func getPredicate(servingArchiveID: UUID,
                              consumedDay: String,
@@ -29,6 +39,13 @@ public extension ZServingRun {
     static func byCreatedAt(ascending: Bool = true) -> [NSSortDescriptor] {
         [
             NSSortDescriptor(keyPath: \ZServingRun.createdAt, ascending: ascending),
+        ]
+    }
+
+    static func byConsumedTime(ascending: Bool = true) -> [NSSortDescriptor] {
+        [
+            NSSortDescriptor(keyPath: \ZServingRun.consumedTime, ascending: ascending),
+            NSSortDescriptor(keyPath: \ZServingRun.createdAt, ascending: true),
         ]
     }
 }

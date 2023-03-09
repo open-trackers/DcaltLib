@@ -30,7 +30,7 @@ public extension MCategory {
     static func byUserOrder(ascending: Bool = true) -> [NSSortDescriptor] {
         [
             NSSortDescriptor(keyPath: \MCategory.userOrder, ascending: ascending),
-            NSSortDescriptor(keyPath: \MCategory.createdAt, ascending: ascending),
+            NSSortDescriptor(keyPath: \MCategory.createdAt, ascending: true),
         ]
     }
 }

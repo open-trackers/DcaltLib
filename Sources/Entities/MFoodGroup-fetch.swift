@@ -13,7 +13,11 @@ import CoreData
 
 import TrackerLib
 
-internal extension MFoodGroup {
+public extension MFoodGroup {
+    static func getPredicate(category: MCategory) -> NSPredicate {
+        NSPredicate(format: "category == %@", category)
+    }
+
     static func getPredicate(categoryArchiveID: UUID, groupRaw: Int16) -> NSPredicate {
         NSPredicate(format: "category.archiveID == %@ AND groupRaw == %i", categoryArchiveID.uuidString, groupRaw)
     }
@@ -23,6 +27,14 @@ public extension MFoodGroup {
     static func byCreatedAt(ascending: Bool = true) -> [NSSortDescriptor] {
         [
             NSSortDescriptor(keyPath: \MFoodGroup.createdAt, ascending: ascending),
+        ]
+    }
+
+    /// sort by userOrder(ascending/descending), createdAt(ascending)
+    static func byUserOrder(ascending: Bool = true) -> [NSSortDescriptor] {
+        [
+            NSSortDescriptor(keyPath: \MFoodGroup.userOrder, ascending: ascending),
+            NSSortDescriptor(keyPath: \MFoodGroup.createdAt, ascending: true),
         ]
     }
 }
