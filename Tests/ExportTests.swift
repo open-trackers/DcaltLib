@@ -49,7 +49,7 @@ final class ExportTests: TestBase {
         calories = Int16(caloriesStr)
         userOrder = Int16(userOrderStr)
 
-        (consumedDay, consumedTime) = splitDate(consumedAt)!
+        (consumedDay, consumedTime) = splitDateLocal(consumedAt)!
     }
 
     func testZCategory() throws {

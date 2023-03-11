@@ -62,8 +62,8 @@ final class LogCaloriesTests: TestBase {
         userOrder1 = Int16(userOrder1Str)
         userOrder2 = Int16(userOrder2Str)
 
-        (consumedDay1, consumedTime1) = splitDate(day1)!
-        (consumedDay2, consumedTime2) = splitDate(day2)!
+        (consumedDay1, consumedTime1) = splitDateLocal(day1)!
+        (consumedDay2, consumedTime2) = splitDateLocal(day2)!
     }
 
     func testSimple() throws {

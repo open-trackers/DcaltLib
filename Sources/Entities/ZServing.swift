@@ -34,7 +34,7 @@ public extension ZServing {
 
 public extension ZServing {
     /// Shallow copy of self to specified store, returning newly copied record (residing in dstStore).
-    /// NOTE assumes that category is in dstStore.
+    /// NOTE: assumes that category is in dstStore.
     /// Does not delete self.
     /// Does NOT save context.
     func shallowCopy(_ context: NSManagedObjectContext,

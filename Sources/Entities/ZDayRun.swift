@@ -93,4 +93,10 @@ public extension ZDayRun {
         guard let servingRuns = zServingRuns?.allObjects as? [ZServingRun] else { return }
         calories = servingRuns.filter { !$0.userRemoved }.reduce(0) { $0 + $1.calories }
     }
+
+    /// NOTE: could use some tests
+    func consumedDate(consumedTime: String? = nil, tz: TimeZone = .current) -> Date? {
+        guard let consumedDay else { return nil }
+        return mergeDateLocal(dateStr: consumedDay, timeStr: consumedTime, tz: tz)
+    }
 }

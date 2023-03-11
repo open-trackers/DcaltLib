@@ -76,7 +76,7 @@ internal func deepCopy(_ context: NSManagedObjectContext,
     var copiedZDays = [ZDayRun]()
 
     // Cache the dServings for creating dServingRun, where available.
-    // NOTE zDayRun may refer to servings from multiple categories.
+    // NOTE: zDayRun may refer to servings from multiple categories.
     var dServingDict: [UUID: ZServing] = [:]
 
     try context.fetcher(inStore: srcStore) { (sCategory: ZCategory) in

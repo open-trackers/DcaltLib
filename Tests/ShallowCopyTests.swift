@@ -92,7 +92,7 @@ final class ShallowCopyTests: TestBase {
 
     func testCategoryWithServingAndServingRun() throws {
         let consumedAt = Date()
-        let (consumedDay, consumedTime) = splitDate(consumedAt)!
+        let (consumedDay, consumedTime) = splitDateLocal(consumedAt)!
         let calories: Int16 = 30
         let sc = ZCategory.create(testContext, categoryArchiveID: categoryArchiveID, categoryName: "blah", createdAt: createdAt1, toStore: mainStore)
         let ss = ZServing.create(testContext, zCategory: sc, servingArchiveID: servingArchiveID, servingName: "bleh", createdAt: createdAt2, toStore: mainStore)
@@ -148,7 +148,7 @@ final class ShallowCopyTests: TestBase {
 
     func testServingRunIncludesUserRemoved() throws {
         let consumedAt = Date()
-        let (consumedDay, consumedTime) = splitDate(consumedAt)!
+        let (consumedDay, consumedTime) = splitDateLocal(consumedAt)!
         let calories: Int16 = 30
         let sc = ZCategory.create(testContext, categoryArchiveID: categoryArchiveID, categoryName: "blah", createdAt: createdAt1, toStore: mainStore)
         let ss = ZServing.create(testContext, zCategory: sc, servingArchiveID: servingArchiveID, servingName: "bleh", createdAt: createdAt2, toStore: mainStore)
@@ -182,7 +182,7 @@ final class ShallowCopyTests: TestBase {
 
     func testDayRunIncludesUserRemoved() throws {
         let consumedAt = Date()
-        let (consumedDay, _) = splitDate(consumedAt)!
+        let (consumedDay, _) = splitDateLocal(consumedAt)!
         let sdr = ZDayRun.create(testContext, consumedDay: consumedDay, calories: 2392, createdAt: createdAt3, toStore: mainStore)
         sdr.userRemoved = true
         try testContext.save()

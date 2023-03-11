@@ -24,7 +24,7 @@ public extension ZServingRun {
         NSPredicate(format: "zDayRun == %@ AND userRemoved == %@", zDayRun, NSNumber(value: userRemoved))
     }
 
-    /// NOTE does NOT filter for the userRemoved attribute!
+    /// NOTE: does NOT filter for the userRemoved attribute!
     static func getPredicate(servingArchiveID: UUID,
                              consumedDay: String,
                              consumedTime: String) -> NSPredicate
