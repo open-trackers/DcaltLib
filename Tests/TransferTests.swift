@@ -71,7 +71,7 @@ final class TransferTests: TestBase {
 
     func testCategoryWithServingAndServingRun() throws {
         let consumedAt = Date()
-        let (consumedDay, consumedTime) = splitDateLocal(consumedAt)!
+        let (consumedDay, consumedTime) = consumedAt.splitToLocal()!
         let intensity: Int16 = 30
         let sr = ZCategory.create(testContext, categoryArchiveID: categoryArchiveID, categoryName: "blah", toStore: mainStore)
         let se = ZServing.create(testContext, zCategory: sr, servingArchiveID: servingArchiveID, servingName: "bleh", toStore: mainStore)

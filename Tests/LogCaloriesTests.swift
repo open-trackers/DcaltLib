@@ -62,8 +62,8 @@ final class LogCaloriesTests: TestBase {
         userOrder1 = Int16(userOrder1Str)
         userOrder2 = Int16(userOrder2Str)
 
-        (consumedDay1, consumedTime1) = splitDateLocal(day1)!
-        (consumedDay2, consumedTime2) = splitDateLocal(day2)!
+        (consumedDay1, consumedTime1) = day1.splitToLocal()!
+        (consumedDay2, consumedTime2) = day2.splitToLocal()!
     }
 
     func testSimple() throws {
@@ -76,7 +76,7 @@ final class LogCaloriesTests: TestBase {
         XCTAssertNil(try ZDayRun.get(testContext, consumedDay: consumedDay1, inStore: mainStore))
         XCTAssertNil(try ZServingRun.get(testContext, servingArchiveID: serving1ArchiveID, consumedDay: consumedDay1, consumedTime: consumedTime1, inStore: mainStore))
 
-        try MServing.logCalories(testContext, category: r, mainStore: mainStore, servingArchiveID: s.archiveID!, servingName: s.wrappedName, netCalories: calories1, startOfDay: startOfDay, now: day1)
+        try MServing.logCalories(testContext, category: r, mainStore: mainStore, servingArchiveID: s.archiveID!, servingName: s.wrappedName, netCalories: calories1, startOfDay: startOfDay, date: day1)
         try testContext.save()
 
         let zr = try ZCategory.get(testContext, categoryArchiveID: categoryArchiveID, inStore: mainStore)
@@ -103,7 +103,7 @@ final class LogCaloriesTests: TestBase {
         _ = MServing.create(testContext, category: r, userOrder: userOrder2, name: "blort", archiveID: serving2ArchiveID)
         try testContext.save()
 
-        try MServing.logCalories(testContext, category: r, mainStore: mainStore, servingArchiveID: e1.archiveID!, servingName: e1.wrappedName, netCalories: calories1, startOfDay: startOfDay, now: day1)
+        try MServing.logCalories(testContext, category: r, mainStore: mainStore, servingArchiveID: e1.archiveID!, servingName: e1.wrappedName, netCalories: calories1, startOfDay: startOfDay, date: day1)
         try testContext.save()
 
         XCTAssertNotNil(try ZDayRun.get(testContext, consumedDay: consumedDay1, inStore: mainStore))
@@ -140,7 +140,7 @@ final class LogCaloriesTests: TestBase {
         let e2 = MServing.create(testContext, category: r, userOrder: userOrder2, name: "blort", archiveID: serving2ArchiveID)
         try testContext.save()
 
-        try MServing.logCalories(testContext, category: r, mainStore: mainStore, servingArchiveID: e1.archiveID!, servingName: e1.wrappedName, netCalories: calories1, startOfDay: startOfDay, now: day1)
+        try MServing.logCalories(testContext, category: r, mainStore: mainStore, servingArchiveID: e1.archiveID!, servingName: e1.wrappedName, netCalories: calories1, startOfDay: startOfDay, date: day1)
         try testContext.save()
 
         XCTAssertNotNil(try ZDayRun.get(testContext, consumedDay: consumedDay1, inStore: mainStore))
@@ -158,7 +158,7 @@ final class LogCaloriesTests: TestBase {
         XCTAssertNil(try ZServingRun.get(testContext, servingArchiveID: serving1ArchiveID, consumedDay: consumedDay1, consumedTime: consumedTime1, inStore: mainStore))
         XCTAssertNotNil(try ZServingRun.get(testContext, servingArchiveID: serving1ArchiveID, consumedDay: consumedDay1, consumedTime: consumedTime1, inStore: archiveStore))
 
-        try MServing.logCalories(testContext, category: r, mainStore: mainStore, servingArchiveID: e2.archiveID!, servingName: e2.wrappedName, netCalories: calories2, startOfDay: startOfDay, now: day2)
+        try MServing.logCalories(testContext, category: r, mainStore: mainStore, servingArchiveID: e2.archiveID!, servingName: e2.wrappedName, netCalories: calories2, startOfDay: startOfDay, date: day2)
         try testContext.save()
 
         XCTAssertNotNil(try ZDayRun.get(testContext, consumedDay: consumedDay2, inStore: mainStore))
@@ -205,7 +205,7 @@ final class LogCaloriesTests: TestBase {
         e1.calories = calories1
         try testContext.save()
 
-        try e1.logCalories(testContext, mainStore: mainStore, now: day1, tz: tz)
+        try e1.logCalories(testContext, mainStore: mainStore, date: day1, tz: tz)
         try testContext.save()
 
         guard let zrr1 = try ZDayRun.get(testContext, consumedDay: consumedDay1, inStore: mainStore)
@@ -221,7 +221,7 @@ final class LogCaloriesTests: TestBase {
 
         let e2 = MServing.create(testContext, category: r, userOrder: userOrder2, name: "blort", archiveID: serving1ArchiveID)
         e2.calories = calories2
-        try e2.logCalories(testContext, mainStore: mainStore, now: day1, tz: tz)
+        try e2.logCalories(testContext, mainStore: mainStore, date: day1, tz: tz)
         try testContext.save()
 
         guard let zrr2 = try ZDayRun.get(testContext, consumedDay: consumedDay1, inStore: mainStore)

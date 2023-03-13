@@ -38,9 +38,8 @@ public func transferToArchive(_ context: NSManagedObjectContext,
                                                toStore: archiveStore)
 
     // get the "YYYY-MM-DD" for the current (subjective) day
-    guard let (todayYYYYMMDD, _) = getSubjectiveDate(startOfDay: startOfDay.rawValue,
-                                                     now: now,
-                                                     tz: tz)
+    guard let (todayYYYYMMDD, _) = now.getSubjectiveDate(startOfDay: startOfDay.rawValue,
+                                                         tz: tz)
     else { throw TrackerError.missingData(msg: "Unable to determine subjective day for today.") }
 
     let todayZDayRun = zDayRuns.first(where: { $0.consumedDay == todayYYYYMMDD }) // okay if nil

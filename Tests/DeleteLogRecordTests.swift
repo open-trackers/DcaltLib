@@ -22,7 +22,7 @@ final class DeleteLogRecordTests: TestBase {
     func testZServingRunFromBothStores() throws {
         let startedAt = Date.now
         let consumedAt = startedAt + 1000
-        let (consumedDay, consumedTime) = splitDateLocal(consumedAt)!
+        let (consumedDay, consumedTime) = consumedAt.splitToLocal()!
         let r = ZCategory.create(testContext, categoryArchiveID: categoryArchiveID, categoryName: "blah", toStore: mainStore)
         let e = ZServing.create(testContext, zCategory: r, servingArchiveID: servingArchiveID, servingName: "bleh", toStore: mainStore)
         let dr = ZDayRun.create(testContext, consumedDay: consumedDay, calories: 2392, toStore: mainStore)

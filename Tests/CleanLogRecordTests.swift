@@ -46,9 +46,9 @@ final class CleanLogRecordTests: TestBase {
         date2 = df.date(from: date2Str)
         date3 = df.date(from: date3Str)
 
-        (day1, time1) = splitDateLocal(date1)!
-        (day2, time2) = splitDateLocal(date2)!
-        (day3, time3) = splitDateLocal(date3)!
+        (day1, time1) = date1.splitToLocal()!
+        (day2, time2) = date2.splitToLocal()!
+        (day3, time3) = date3.splitToLocal()!
     }
 
     func testSimple() throws {

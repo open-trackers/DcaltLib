@@ -97,6 +97,6 @@ public extension ZDayRun {
     /// Generate a Date from yyyy-MM-dd and HH:mm:ss strings for a timezone.
     func consumedDate(consumedTime: String, tz: TimeZone = .current) -> Date? {
         guard let consumedDay else { return nil }
-        return mergeDateLocal(dateStr: consumedDay, timeStr: consumedTime, tz: tz)
+        return Date.mergeFromLocal(dateStr: consumedDay, timeStr: consumedTime, tz: tz)
     }
 }

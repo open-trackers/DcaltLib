@@ -20,7 +20,7 @@ public extension MServing {
     func logCalories(_ context: NSManagedObjectContext,
                      mainStore: NSPersistentStore,
                      intensity: Float = 1.0,
-                     now: Date = Date.now,
+                     date: Date = Date.now,
                      tz: TimeZone = TimeZone.current) throws
     {
         guard let servingName = name,
@@ -43,7 +43,7 @@ public extension MServing {
                                  servingName: servingName,
                                  netCalories: netCalories,
                                  startOfDay: appSetting.startOfDayEnum,
-                                 now: now,
+                                 date: date,
                                  tz: tz)
 
         lastIntensity = intensity
@@ -58,7 +58,7 @@ public extension MServing {
                             servingName: String,
                             netCalories: Int16,
                             startOfDay: StartOfDay,
-                            now: Date = Date.now,
+                            date: Date = Date.now,
                             tz: TimeZone = TimeZone.current) throws
     {
         guard let categoryArchiveID = category.archiveID,
@@ -67,10 +67,9 @@ public extension MServing {
 
         let dayStartHour = startOfDay.hour
         let dayStartMinute = startOfDay.minute
-        guard let (consumedDay, consumedTime) = getSubjectiveDate(dayStartHour: dayStartHour,
-                                                                  dayStartMinute: dayStartMinute,
-                                                                  now: now,
-                                                                  tz: tz)
+        guard let (consumedDay, consumedTime) = date.getSubjectiveDate(dayStartHour: dayStartHour,
+                                                                       dayStartMinute: dayStartMinute,
+                                                                       tz: tz)
         else { throw TrackerError.invalidData(msg: "Unable to resolve subjective date to log calories.") }
 
         let zCategory = try ZCategory.getOrCreate(context,
@@ -109,6 +108,6 @@ public extension MServing {
         zDayRun.updateCalories()
 
         category.lastCalories = netCalories
-        category.lastConsumedAt = now
+        category.lastConsumedAt = date
     }
 }
