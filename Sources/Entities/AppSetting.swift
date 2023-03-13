@@ -19,6 +19,14 @@ public extension AppSetting {
         get { StartOfDay(rawValue: Int(startOfDay)) ?? StartOfDay.defaultValue }
         set { startOfDay = Int32(newValue.rawValue) }
     }
+
+    var subjectiveToday: String? {
+        guard let sod = StartOfDay(rawValue: Int(startOfDay)),
+              let (consumedDay, _) = Date.now.getSubjectiveDate(dayStartHour: sod.hour,
+                                                                dayStartMinute: sod.minute)
+        else { return nil }
+        return consumedDay
+    }
 }
 
 public extension AppSetting {
