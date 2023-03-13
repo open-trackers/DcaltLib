@@ -42,6 +42,10 @@ public enum StartOfDay: Int, CaseIterable, CustomStringConvertible {
         String(format: "%02d:%02d", hour, minute)
     }
 
+    public var HH_mm_ss: String {
+        "\(description):00"
+    }
+
     public var hour: Int {
         Int(rawValue / 3600)
     }
