@@ -1,5 +1,5 @@
 //
-//  Presets.swift
+//  ServingPresets.swift
 //
 // Copyright 2022, 2023  OpenAlloc LLC
 //
@@ -12,40 +12,6 @@ import Collections
 import Foundation
 
 import TrackerLib
-
-public let categoryNamePresets: OrderedDictionary = [
-    "Food Types": [
-        "Carbohydrate",
-        "Protein",
-        "Starch",
-    ],
-    "Meals": [
-        "Breakfast",
-        "Lunch",
-        "Dinner",
-    ],
-    "Serving Types": [
-        "Entreé",
-        "Side",
-        "Snack",
-        "Beverage",
-        "Condiment",
-    ],
-    "Standard": [
-        "Meat",
-        "Seafood",
-        "Entree/Side",
-        "Dairy",
-        "Bread/Grain",
-        "Fruit/Veg",
-        "Beverage",
-        "Snack",
-    ],
-    "Miscellaneous": [
-        "Miscellaneous",
-        "Other",
-    ],
-]
 
 public typealias ServingPresetDict = OrderedDictionary<FoodGroup, [ServingPreset]>
 
@@ -360,45 +326,4 @@ public let servingPresets: ServingPresetDict = [
         ServingPreset(title: "Egg (large, scrambled)", weight_g: 61, calories: 91),
         ServingPreset(title: "Egg White (large, raw)", weight_g: 33, calories: 17),
     ],
-]
-
-// initial pool of images to assign to routines
-public let systemImageNames = [
-    "carrot",
-    "carrot.fill",
-    "cup.and.saucer",
-    "cup.and.saucer.fill",
-    "fork.knife",
-    "fish",
-    "fish.fill",
-    "glowplug",
-    "mug",
-    "mug.fill",
-    "popcorn",
-    "popcorn.fill",
-    "takeoutbag.and.cup.and.straw",
-    "takeoutbag.and.cup.and.straw.fill",
-    "airplane",
-    "atom",
-    "bicycle",
-    "bolt.fill",
-    "bolt.shield.fill",
-    "burn",
-    "crown.fill",
-    "figure.fall",
-    "figure.wave",
-    "flag.2.crossed.fill",
-    "flag.checkered",
-    "flame",
-    "fuelpump.fill",
-    "hare.fill",
-    "infinity",
-    "key.fill",
-    "pawprint.fill",
-    "snowflake",
-    "sparkles",
-    "tornado",
-    "tortoise.fill",
-    "wind",
-    // add new ones here
 ]
