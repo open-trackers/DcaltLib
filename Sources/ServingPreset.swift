@@ -12,7 +12,7 @@ import Foundation
 
 import TrackerLib
 
-public struct ServingPreset: NameablePreset & Hashable, CustomStringConvertible {
+public struct ServingPreset: NameablePreset, CustomStringConvertible {
     public var title: String
     public let volume_mL: Float? // in ml, if available
     public let weight_g: Float? // in grams, if available
@@ -30,7 +30,6 @@ public struct ServingPreset: NameablePreset & Hashable, CustomStringConvertible 
     }
 
     public var description: String {
-        "\(title),\(volume_mL ?? -1),\(weight_g ?? -1),\(calories)"
-        // "\(title),\(volume_mL),\(weight_g),\(calories)"
+        "\(title) (\(calories) cal)"
     }
 }
