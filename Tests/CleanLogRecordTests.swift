@@ -60,7 +60,7 @@ final class CleanLogRecordTests: TestBase {
         try testContext.save()
 
         // keep since the first day
-        try cleanLogRecords(testContext, keepSinceDay: day1)
+        try cleanLogRecords(testContext, keepSinceDay: day1, inStore: mainStore)
         try testContext.save()
         XCTAssertNotNil(try ZCategory.get(testContext, categoryArchiveID: categoryArchiveID, inStore: mainStore))
         XCTAssertNotNil(try ZServing.get(testContext, categoryArchiveID: categoryArchiveID, servingArchiveID: servingArchiveID, inStore: mainStore))
@@ -68,7 +68,7 @@ final class CleanLogRecordTests: TestBase {
         XCTAssertNotNil(try ZServingRun.get(testContext, servingArchiveID: servingArchiveID, consumedDay: day2, consumedTime: time2, inStore: mainStore))
 
         // keep since the second day (the day we logged)
-        try cleanLogRecords(testContext, keepSinceDay: day2)
+        try cleanLogRecords(testContext, keepSinceDay: day2, inStore: mainStore)
         try testContext.save()
         XCTAssertNotNil(try ZCategory.get(testContext, categoryArchiveID: categoryArchiveID, inStore: mainStore))
         XCTAssertNotNil(try ZServing.get(testContext, categoryArchiveID: categoryArchiveID, servingArchiveID: servingArchiveID, inStore: mainStore))
@@ -76,7 +76,7 @@ final class CleanLogRecordTests: TestBase {
         XCTAssertNotNil(try ZServingRun.get(testContext, servingArchiveID: servingArchiveID, consumedDay: day2, consumedTime: time2, inStore: mainStore))
 
         // discard if keeping since the third day
-        try cleanLogRecords(testContext, keepSinceDay: day3)
+        try cleanLogRecords(testContext, keepSinceDay: day3, inStore: mainStore)
         try testContext.save()
         XCTAssertNotNil(try ZCategory.get(testContext, categoryArchiveID: categoryArchiveID, inStore: mainStore))
         XCTAssertNotNil(try ZServing.get(testContext, categoryArchiveID: categoryArchiveID, servingArchiveID: servingArchiveID, inStore: mainStore))

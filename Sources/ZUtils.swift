@@ -14,7 +14,7 @@ import TrackerLib
 
 /// Delete ZDayRun and ZServingRun records older than keepSince
 /// NOTE: does NOT save context
-public func cleanLogRecords(_ context: NSManagedObjectContext, keepSinceDay: String, inStore: NSPersistentStore? = nil) throws {
+public func cleanLogRecords(_ context: NSManagedObjectContext, keepSinceDay: String, inStore: NSPersistentStore) throws {
     // ZServingRun should cascade delete off this
 
     let pred = NSPredicate(format: "consumedDay < %@", keepSinceDay)
