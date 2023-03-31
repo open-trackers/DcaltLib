@@ -10,26 +10,28 @@
 
 import Foundation
 
+import TextFieldPreset
+
 import TrackerLib
 
-public struct ServingPreset: NameablePreset, CustomStringConvertible {
-    public var title: String
+public struct ServingPreset: PresettableItem, CustomStringConvertible {
+    public var text: String
     public let volume_mL: Float? // in ml, if available
     public let weight_g: Float? // in grams, if available
     public let calories: Float
 
-    public init(title: String,
+    public init(_ text: String,
                 volume_mL: Float? = nil,
                 weight_g: Float? = nil,
                 calories: Float)
     {
-        self.title = title
+        self.text = text
         self.volume_mL = volume_mL
         self.weight_g = weight_g
         self.calories = calories
     }
 
     public var description: String {
-        "\(title) (\(calories) cal)"
+        "\(text) (\(calories) cal)"
     }
 }

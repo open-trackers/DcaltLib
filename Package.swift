@@ -10,11 +10,13 @@ let package = Package(name: "DcaltLib",
                       ],
                       dependencies: [
                           .package(url: "https://github.com/open-trackers/TrackerLib.git", from: "1.0.0"),
+                          .package(url: "https://github.com/openalloc/SwiftTextFieldPreset.git", from: "1.0.0"),
                       ],
                       targets: [
                           .target(name: "DcaltLib",
                                   dependencies: [
                                       .product(name: "TrackerLib", package: "TrackerLib"),
+                                      .product(name: "TextFieldPreset", package: "SwiftTextFieldPreset"),
                                   ],
                                   path: "Sources",
                                   resources: [
