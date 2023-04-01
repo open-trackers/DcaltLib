@@ -46,13 +46,13 @@ public extension MServing {
         presets.forEach { preset in
             userOrder += 1
 
-            _ = MServing.create(context,
-                                category: category,
-                                userOrder: userOrder,
-                                name: preset.text,
-                                createdAt: createdAt)
+            let serving = MServing.create(context,
+                                          category: category,
+                                          userOrder: userOrder,
+                                          name: preset.text,
+                                          createdAt: createdAt)
 
-            // try task.replaceFields(context, from: preset)
+            serving.populate(from: preset)
         }
     }
 }
@@ -70,5 +70,13 @@ public extension MServing {
     var netCalories: Int {
         guard lastIntensity > 0 else { return 0 }
         return Int(Float(calories) * lastIntensity)
+    }
+}
+
+public extension MServing {
+    func populate(from preset: ServingPreset) {
+        volume_mL = Float(preset.volume_mL ?? 0)
+        weight_g = Float(preset.weight_g ?? 0)
+        calories = Int16(preset.calories)
     }
 }
