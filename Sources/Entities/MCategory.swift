@@ -52,3 +52,11 @@ public extension MCategory {
         servings?.first != nil
     }
 }
+
+public extension MCategory {
+    var filteredPresets: ServingPresetDict? {
+        guard foodGroupsArray.count > 0 else { return nil }
+        let foodGroups = foodGroupsArray.map { FoodGroup(rawValue: $0.groupRaw) }
+        return servingPresets.filter { foodGroups.contains($0.key) }
+    }
+}

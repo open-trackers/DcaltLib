@@ -35,6 +35,29 @@ public extension MServing {
 }
 
 public extension MServing {
+    // Bulk creation of servings, from serving preset multi-select on iOS.
+    // NOTE: does NOT save context
+    static func bulkCreate(_ context: NSManagedObjectContext,
+                           category: MCategory,
+                           presets: [ServingPreset],
+                           createdAt: Date = Date.now) throws
+    {
+        var userOrder = try (Self.maxUserOrder(context, category: category)) ?? 0
+        presets.forEach { preset in
+            userOrder += 1
+
+            _ = MServing.create(context,
+                                category: category,
+                                userOrder: userOrder,
+                                name: preset.text,
+                                createdAt: createdAt)
+
+            // try task.replaceFields(context, from: preset)
+        }
+    }
+}
+
+public extension MServing {
     var wrappedName: String {
         get { name ?? "unknown" }
         set { name = newValue }
