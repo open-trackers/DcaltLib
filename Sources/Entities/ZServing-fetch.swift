@@ -21,8 +21,8 @@ public extension ZServing {
                              servingArchiveID: UUID) -> NSPredicate
     {
         NSPredicate(format: "zCategory.categoryArchiveID == %@ AND servingArchiveID == %@",
-                    categoryArchiveID.uuidString,
-                    servingArchiveID.uuidString)
+                    categoryArchiveID as NSUUID,
+                    servingArchiveID as NSUUID)
     }
 }
 

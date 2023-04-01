@@ -30,7 +30,7 @@ public extension ZServingRun {
                              consumedTime: String) -> NSPredicate
     {
         NSPredicate(format: "zServing.servingArchiveID == %@ AND zDayRun.consumedDay == %@ AND consumedTime == %@",
-                    servingArchiveID.uuidString,
+                    servingArchiveID as NSUUID,
                     consumedDay, consumedTime)
     }
 }

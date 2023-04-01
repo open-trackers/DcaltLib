@@ -14,7 +14,7 @@ import TrackerLib
 
 internal extension ZCategory {
     static func getPredicate(categoryArchiveID: UUID) -> NSPredicate {
-        NSPredicate(format: "categoryArchiveID == %@", categoryArchiveID.uuidString)
+        NSPredicate(format: "categoryArchiveID == %@", categoryArchiveID as NSUUID)
     }
 }
 
