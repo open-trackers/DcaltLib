@@ -12,6 +12,21 @@ import CoreData
 import Foundation
 import WidgetKit
 
+
+public struct SimpleEntry: TimelineEntry, Encodable {
+    public init(date: Date, targetCalories: Int, currentCalories: Int) {
+        self.date = date
+        self.targetCalories = targetCalories
+        self.currentCalories = currentCalories
+    }
+    
+    public let date: Date
+    public let targetCalories: Int
+    public let currentCalories: Int
+}
+
+
+
 typealias Key = UserDefaults.Keys
 
 public extension UserDefaults {
