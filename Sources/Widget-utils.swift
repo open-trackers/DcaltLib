@@ -11,4 +11,3 @@
 import CoreData
 import Foundation
 import WidgetKit
-

@@ -27,7 +27,6 @@ public struct WidgetEntry: TimelineEntry, Codable {
     public let currentCalories: Int
 }
 
-
 public extension UserDefaults {
     internal static let appGroupSuiteName = "group.org.openalloc.dcalt"
     internal static let widgetEntryKey = "widgetEntry"
@@ -46,7 +45,6 @@ public extension UserDefaults {
 }
 
 public extension WidgetEntry {
-    
     // Refresh widget with the latest data.
     // NOTE: does NOT save context (if AppSetting is created)
     static func refresh(_ context: NSManagedObjectContext, inStore: NSPersistentStore, now: Date = Date.now, reload: Bool) {
@@ -76,5 +74,4 @@ public extension WidgetEntry {
             WidgetCenter.shared.reloadAllTimelines()
         }
     }
-
 }
