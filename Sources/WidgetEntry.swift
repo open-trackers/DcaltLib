@@ -33,7 +33,7 @@ public extension UserDefaults {
 
     static let appGroup = UserDefaults(suiteName: appGroupSuiteName)!
 
-    func getSimpleEntry() -> WidgetEntry? {
+    func get() -> WidgetEntry? {
         guard let data = data(forKey: Self.widgetEntryKey) else { return nil }
         return try? JSONDecoder().decode(WidgetEntry.self, from: data)
     }
