@@ -111,7 +111,8 @@ public extension MServing {
         category.lastCalories = netCalories
         category.lastConsumedAt = date
 
-        refreshWidget(currentCalories: calories)
-        refreshWidgetReload()
+        let targetCalories: Int16 = (try? AppSetting.getOrCreate(context).targetCalories) ?? defaultTargetCalories
+
+        refreshWidget(targetCalories: targetCalories, currentCalories: calories, reload: true)
     }
 }

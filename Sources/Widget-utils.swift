@@ -12,20 +12,20 @@ import CoreData
 import Foundation
 import WidgetKit
 
-
-public struct SimpleEntry: TimelineEntry, Encodable {
-    public init(date: Date, targetCalories: Int, currentCalories: Int) {
+public struct SimpleEntry: TimelineEntry, Codable {
+    public init(date: Date = Date.now,
+                targetCalories: Int,
+                currentCalories: Int)
+    {
         self.date = date
         self.targetCalories = targetCalories
         self.currentCalories = currentCalories
     }
-    
+
     public let date: Date
     public let targetCalories: Int
     public let currentCalories: Int
 }
-
-
 
 typealias Key = UserDefaults.Keys
 
@@ -35,33 +35,26 @@ public extension UserDefaults {
     static let appGroup = UserDefaults(suiteName: appGroupSuiteName)!
 
     enum Keys: String {
-        case currentCalories
-        case targetCalories
+        case simpleEntry
     }
 
-//    func setArray(_ array: [some Encodable], forKey key: String) {
-//        let data = try? JSONEncoder().encode(array)
-//        set(data, forKey: key)
-//    }
-//
-//    func getArray<Element>(forKey key: String) -> [Element]? where Element: Decodable {
-//        guard let data = data(forKey: key) else { return nil }
-//        return try? JSONDecoder().decode([Element].self, from: data)
-//    }
+    func getSimpleEntry() -> SimpleEntry? {
+        let rawKey = Keys.simpleEntry.rawValue
+        guard let data = data(forKey: rawKey) else { return nil }
+        return try? JSONDecoder().decode(SimpleEntry.self, from: data)
+    }
 
-    // ensure the widget/complication receives the updated value
-    static func update(_ key: UserDefaults.Keys, value: Int) {
-        let rawKey = key.rawValue
-        UserDefaults.appGroup.set(value, forKey: rawKey)
+    func set(_ entry: SimpleEntry) {
+        let data = try? JSONEncoder().encode(entry)
+        let rawKey = Keys.simpleEntry.rawValue
+        set(data, forKey: rawKey)
     }
 }
 
 // Refresh widget with the latest data.
 // NOTE: does NOT save context (if AppSetting is created)
-public func refreshWidget(_ context: NSManagedObjectContext, inStore: NSPersistentStore) {
+public func refreshWidget(_ context: NSManagedObjectContext, inStore: NSPersistentStore, now: Date = Date.now, reload: Bool) {
     guard let appSetting = try? AppSetting.getOrCreate(context) else { return }
-
-    refreshWidget(targetCalories: appSetting.targetCalories)
 
     let calories: Int16 = {
         if let consumedDay = appSetting.subjectiveToday,
@@ -73,23 +66,17 @@ public func refreshWidget(_ context: NSManagedObjectContext, inStore: NSPersiste
         }
     }()
 
-    refreshWidget(currentCalories: calories)
-
-    refreshWidgetReload()
+    refreshWidget(targetCalories: appSetting.targetCalories, currentCalories: calories, now: now, reload: reload)
 }
 
-public func refreshWidget(currentCalories: Int16) {
-    print("REFRESH current \(currentCalories)")
-    UserDefaults.update(.currentCalories, value: Int(currentCalories))
-}
+public func refreshWidget(targetCalories: Int16, currentCalories: Int16, now: Date = Date.now, reload: Bool) {
+    print("REFRESH target \(targetCalories) current \(currentCalories)")
+    let entry = SimpleEntry(date: now, targetCalories: Int(targetCalories), currentCalories: Int(currentCalories))
+    UserDefaults.appGroup.set(entry)
 
-public func refreshWidget(targetCalories: Int16) {
-    print("REFRESH target \(targetCalories)")
-    UserDefaults.update(.targetCalories, value: Int(targetCalories))
-}
-
-public func refreshWidgetReload() {
-    UserDefaults.appGroup.synchronize() // ensure new values written to disk
-    WidgetCenter.shared.reloadAllTimelines()
-    print("RELOADED ALL TIMELINES ##############################################")
+    if reload {
+        print("RELOADING ALL TIMELINES ##############################################")
+        UserDefaults.appGroup.synchronize() // ensure new values written to disk
+        WidgetCenter.shared.reloadAllTimelines()
+    }
 }
