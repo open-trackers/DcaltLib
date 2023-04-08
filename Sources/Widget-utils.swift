@@ -12,7 +12,7 @@ import CoreData
 import Foundation
 import WidgetKit
 
-public struct SimpleEntry: TimelineEntry, Codable {
+public struct WidgetEntry: TimelineEntry, Codable {
     public init(date: Date = Date.now,
                 targetCalories: Int,
                 currentCalories: Int)
@@ -35,18 +35,18 @@ public extension UserDefaults {
     static let appGroup = UserDefaults(suiteName: appGroupSuiteName)!
 
     enum Keys: String {
-        case simpleEntry
+        case widgetEntry
     }
 
-    func getSimpleEntry() -> SimpleEntry? {
-        let rawKey = Keys.simpleEntry.rawValue
+    func getSimpleEntry() -> WidgetEntry? {
+        let rawKey = Keys.widgetEntry.rawValue
         guard let data = data(forKey: rawKey) else { return nil }
-        return try? JSONDecoder().decode(SimpleEntry.self, from: data)
+        return try? JSONDecoder().decode(WidgetEntry.self, from: data)
     }
 
-    func set(_ entry: SimpleEntry) {
+    func set(_ entry: WidgetEntry) {
         let data = try? JSONEncoder().encode(entry)
-        let rawKey = Keys.simpleEntry.rawValue
+        let rawKey = Keys.widgetEntry.rawValue
         set(data, forKey: rawKey)
     }
 }
@@ -71,7 +71,7 @@ public func refreshWidget(_ context: NSManagedObjectContext, inStore: NSPersiste
 
 public func refreshWidget(targetCalories: Int16, currentCalories: Int16, now: Date = Date.now, reload: Bool) {
     print("REFRESH target \(targetCalories) current \(currentCalories)")
-    let entry = SimpleEntry(date: now, targetCalories: Int(targetCalories), currentCalories: Int(currentCalories))
+    let entry = WidgetEntry(date: now, targetCalories: Int(targetCalories), currentCalories: Int(currentCalories))
     UserDefaults.appGroup.set(entry)
 
     if reload {
