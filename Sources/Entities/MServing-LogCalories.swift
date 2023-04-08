@@ -113,6 +113,6 @@ public extension MServing {
 
         let targetCalories: Int16 = (try? AppSetting.getOrCreate(context).targetCalories) ?? defaultTargetCalories
 
-        refreshWidget(targetCalories: targetCalories, currentCalories: calories, reload: true)
+        WidgetEntry.refresh(targetCalories: targetCalories, currentCalories: calories, reload: true)
     }
 }
