@@ -105,9 +105,13 @@ public extension MServing {
         }
 
         // (re-)sum the day's total calories
-        zDayRun.updateCalories()
+        let calories = zDayRun.refreshCalorieSum()
 
+        // ensure that the category cell reflects the change
         category.lastCalories = netCalories
         category.lastConsumedAt = date
+
+        refreshWidget(currentCalories: calories)
+        refreshWidgetReload()
     }
 }

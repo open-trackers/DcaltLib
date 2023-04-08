@@ -83,15 +83,13 @@ public extension ZDayRun {
         (zServingRuns?.allObjects as? [ZServingRun]) ?? []
     }
 
+    /// Recalculate calories
     /// NOTE: does NOT save context
     /// Respects the 'userRemoved' flag.
-    func updateCalories() {
-        if userRemoved {
-            calories = 0
-            return
-        }
-        guard let servingRuns = zServingRuns?.allObjects as? [ZServingRun] else { return }
-        calories = servingRuns.filter { !$0.userRemoved }.reduce(0) { $0 + $1.calories }
+    /// Called for remote change.
+    func refreshCalorieSum() -> Int16 {
+        calories = userRemoved ? 0 : ZServingRun.sumCalories(servingRunsArray)
+        return calories
     }
 
     /// Generate a Date from yyyy-MM-dd and HH:mm:ss strings for a timezone.
