@@ -15,7 +15,7 @@ import WidgetKit
 typealias Key = UserDefaults.Keys
 
 public extension UserDefaults {
-    static let appGroupSuiteName = "group.org.openalloc.dcalt.watch"
+    static let appGroupSuiteName = "group.org.openalloc.dcalt"
 
     static let appGroup = UserDefaults(suiteName: appGroupSuiteName)!
 
