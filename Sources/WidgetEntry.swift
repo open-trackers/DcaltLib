@@ -9,22 +9,30 @@
 //
 
 import CoreData
-import Foundation
+import SwiftUI
 import WidgetKit
 
 public struct WidgetEntry: TimelineEntry, Codable {
-    public init(date: Date = Date.now,
-                targetCalories: Int,
-                currentCalories: Int)
-    {
-        self.date = date
-        self.targetCalories = targetCalories
-        self.currentCalories = currentCalories
+    public struct Pair: Codable {
+        public let color: Color
+        public let value: Float
     }
 
     public let date: Date
     public let targetCalories: Int
     public let currentCalories: Int
+    public let pairs: [Pair]
+
+    public init(date: Date = Date.now,
+                targetCalories: Int,
+                currentCalories: Int,
+                pairs: [Pair] = [])
+    {
+        self.date = date
+        self.targetCalories = targetCalories
+        self.currentCalories = currentCalories
+        self.pairs = pairs
+    }
 }
 
 public extension UserDefaults {
@@ -47,25 +55,53 @@ public extension UserDefaults {
 public extension WidgetEntry {
     // Refresh widget with the latest data.
     // NOTE: does NOT save context (if AppSetting is created)
-    static func refresh(_ context: NSManagedObjectContext, inStore: NSPersistentStore, now: Date = Date.now, reload: Bool) {
+    static func refresh(_ context: NSManagedObjectContext, inStore: NSPersistentStore, now: Date = Date.now, reload: Bool, defaultColor: Color = .clear) {
         guard let appSetting = try? AppSetting.getOrCreate(context) else { return }
 
-        let calories: Int16 = {
-            if let consumedDay = appSetting.subjectiveToday,
-               let zdr = try? ZDayRun.get(context, consumedDay: consumedDay, inStore: inStore)
-            {
-                return zdr.refreshCalorieSum()
-            } else {
-                return 0
-            }
-        }()
+        guard let consumedDay = appSetting.subjectiveToday,
+              let zdr = try? ZDayRun.get(context, consumedDay: consumedDay, inStore: inStore) else { return }
 
-        refresh(targetCalories: appSetting.targetCalories, currentCalories: calories, now: now, reload: reload)
+        let calories: Int16 = zdr.refreshCalorieSum()
+
+        // TODO: use OrderedDictionary to ensure consistent ordering between runs
+        // as there might be more than one serving run per category, roll them up via a dictionary
+        let categoryAmounts: [UUID: Float] = zdr.servingRunsArray.reduce(into: [:]) { dict, element in
+            guard calories > 0,
+                  let categoryArchiveID = element.zServing?.zCategory?.categoryArchiveID
+            else { return }
+            let fractionValue = Float(element.calories) / Float(calories)
+            dict[categoryArchiveID, default: 0] += fractionValue
+        }
+
+        let pairs: [WidgetEntry.Pair] = categoryAmounts.reduce(into: []) { array, keyValue in
+            let categoryArchiveID = keyValue.key
+            let amount = keyValue.value
+
+            let color: Color = {
+                guard let category = try? MCategory.get(context, archiveID: categoryArchiveID)
+                else {
+                    // category was deleted
+                    return defaultColor
+                }
+                return category.getColor() ?? defaultColor
+            }()
+
+            array.append(WidgetEntry.Pair(color: color, value: amount))
+        }
+
+        refresh(targetCalories: appSetting.targetCalories,
+                currentCalories: calories,
+                pairs: pairs,
+                now: now,
+                reload: reload)
     }
 
-    static func refresh(targetCalories: Int16, currentCalories: Int16, now: Date = Date.now, reload: Bool) {
+    internal static func refresh(targetCalories: Int16, currentCalories: Int16, pairs: [WidgetEntry.Pair], now: Date = Date.now, reload: Bool) {
         print("REFRESH target \(targetCalories) current \(currentCalories)")
-        let entry = WidgetEntry(date: now, targetCalories: Int(targetCalories), currentCalories: Int(currentCalories))
+        let entry = WidgetEntry(date: now,
+                                targetCalories: Int(targetCalories),
+                                currentCalories: Int(currentCalories),
+                                pairs: pairs)
         UserDefaults.appGroup.set(entry)
 
         if reload {
