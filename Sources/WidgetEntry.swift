@@ -12,10 +12,17 @@ import CoreData
 import SwiftUI
 import WidgetKit
 
+import Collections
+
 public struct WidgetEntry: TimelineEntry, Codable {
     public struct Pair: Codable {
         public let color: Color
         public let value: Float
+
+        public init(_ color: Color, _ value: Float) {
+            self.color = color
+            self.value = value
+        }
     }
 
     public let date: Date
@@ -55,7 +62,12 @@ public extension UserDefaults {
 public extension WidgetEntry {
     // Refresh widget with the latest data.
     // NOTE: does NOT save context (if AppSetting is created)
-    static func refresh(_ context: NSManagedObjectContext, inStore: NSPersistentStore, now: Date = Date.now, reload: Bool, defaultColor: Color = .clear) {
+    static func refresh(_ context: NSManagedObjectContext,
+                        inStore: NSPersistentStore,
+                        now: Date = Date.now,
+                        reload: Bool,
+                        defaultColor: Color = .clear)
+    {
         guard let appSetting = try? AppSetting.getOrCreate(context) else { return }
 
         guard let consumedDay = appSetting.subjectiveToday,
@@ -63,9 +75,11 @@ public extension WidgetEntry {
 
         let calories: Int16 = zdr.refreshCalorieSum()
 
-        // TODO: use OrderedDictionary to ensure consistent ordering between runs
+        // NOTE: to ensure consistent ordering between runs
+        typealias Dict = OrderedDictionary<UUID, Float>
+
         // as there might be more than one serving run per category, roll them up via a dictionary
-        let categoryAmounts: [UUID: Float] = zdr.servingRunsArray.reduce(into: [:]) { dict, element in
+        let categoryAmounts: Dict = zdr.servingRunsArray.reduce(into: [:]) { dict, element in
             guard calories > 0,
                   let categoryArchiveID = element.zServing?.zCategory?.categoryArchiveID
             else { return }
@@ -86,7 +100,7 @@ public extension WidgetEntry {
                 return category.getColor() ?? defaultColor
             }()
 
-            array.append(WidgetEntry.Pair(color: color, value: amount))
+            array.append(WidgetEntry.Pair(color, amount))
         }
 
         refresh(targetCalories: appSetting.targetCalories,
@@ -96,7 +110,12 @@ public extension WidgetEntry {
                 reload: reload)
     }
 
-    internal static func refresh(targetCalories: Int16, currentCalories: Int16, pairs: [WidgetEntry.Pair], now: Date = Date.now, reload: Bool) {
+    internal static func refresh(targetCalories: Int16,
+                                 currentCalories: Int16,
+                                 pairs: [WidgetEntry.Pair],
+                                 now: Date = Date.now,
+                                 reload: Bool)
+    {
         print("REFRESH target \(targetCalories) current \(currentCalories)")
         let entry = WidgetEntry(date: now,
                                 targetCalories: Int(targetCalories),
