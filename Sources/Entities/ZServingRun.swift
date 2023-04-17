@@ -87,3 +87,9 @@ extension ZServingRun {
         return zServingRuns
     }
 }
+
+public extension ZServingRun {
+    static func sumCalories(_ elements: [ZServingRun]) -> Int16 {
+        elements.filter { !$0.userRemoved }.reduce(0) { $0 + $1.calories }
+    }
+}

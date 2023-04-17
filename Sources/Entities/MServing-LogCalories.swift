@@ -9,6 +9,7 @@
 //
 
 import CoreData
+import SwiftUI
 
 import TrackerLib
 
@@ -21,7 +22,8 @@ public extension MServing {
                      mainStore: NSPersistentStore,
                      intensity: Float = 1.0,
                      date: Date = Date.now,
-                     tz: TimeZone = TimeZone.current) throws
+                     tz: TimeZone = TimeZone.current,
+                     defaultColor: Color = .clear) throws
     {
         guard let servingName = name,
               let servingArchiveID = archiveID,
@@ -44,7 +46,8 @@ public extension MServing {
                                  netCalories: netCalories,
                                  startOfDay: appSetting.startOfDayEnum,
                                  date: date,
-                                 tz: tz)
+                                 tz: tz,
+                                 defaultColor: defaultColor)
 
         lastIntensity = intensity
     }
@@ -59,7 +62,8 @@ public extension MServing {
                             netCalories: Int16,
                             startOfDay: StartOfDay,
                             date: Date = Date.now,
-                            tz: TimeZone = TimeZone.current) throws
+                            tz: TimeZone = TimeZone.current,
+                            defaultColor: Color = .clear) throws
     {
         guard let categoryArchiveID = category.archiveID,
               let categoryName = category.name
@@ -104,10 +108,14 @@ public extension MServing {
             element.calories = netCalories
         }
 
-        // (re-)sum the day's total calories
-        zDayRun.updateCalories()
-
+        // ensure that the category cell reflects the change
         category.lastCalories = netCalories
         category.lastConsumedAt = date
+
+        // NOTE: this (re-)sums the day's total calories
+        WidgetEntry.refresh(context,
+                            inStore: mainStore,
+                            reload: true,
+                            defaultColor: defaultColor)
     }
 }
