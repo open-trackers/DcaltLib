@@ -116,7 +116,6 @@ public extension WidgetEntry {
                                  now: Date = Date.now,
                                  reload: Bool)
     {
-        print("REFRESH target \(targetCalories) current \(currentCalories)")
         let entry = WidgetEntry(date: now,
                                 targetCalories: Int(targetCalories),
                                 currentCalories: Int(currentCalories),
@@ -124,7 +123,6 @@ public extension WidgetEntry {
         UserDefaults.appGroup.set(entry)
 
         if reload {
-            print("RELOADING ALL TIMELINES ##############################################")
             UserDefaults.appGroup.synchronize() // ensure new values written to disk
             WidgetCenter.shared.reloadAllTimelines()
         }
