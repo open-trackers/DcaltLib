@@ -33,6 +33,13 @@ public extension MCategory {
             NSSortDescriptor(keyPath: \MCategory.createdAt, ascending: true),
         ]
     }
+
+    static func byName(ascending: Bool = true) -> [NSSortDescriptor] {
+        [
+            NSSortDescriptor(keyPath: \MCategory.name, ascending: ascending),
+            NSSortDescriptor(keyPath: \MCategory.createdAt, ascending: true),
+        ]
+    }
 }
 
 public extension MCategory {
