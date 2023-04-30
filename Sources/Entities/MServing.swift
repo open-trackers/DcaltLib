@@ -80,3 +80,13 @@ public extension MServing {
         calories = Int16(preset.calories)
     }
 }
+
+public extension MServing {
+    // NOTE: does NOT save context
+    func move(_ context: NSManagedObjectContext, to nu: MCategory) throws {
+        let nuMaxOrder = try MServing.maxUserOrder(context, category: nu) ?? 0
+        if let old = category { old.removeFromServings(self) }
+        userOrder = nuMaxOrder + 1
+        nu.addToServings(self)
+    }
+}
