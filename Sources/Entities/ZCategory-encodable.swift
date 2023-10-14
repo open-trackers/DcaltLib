@@ -1,6 +1,6 @@
 
 //
-//  ZCategory.swift
+//  ZCategory-encodable.swift
 //
 // Copyright 2023  OpenAlloc LLC
 //

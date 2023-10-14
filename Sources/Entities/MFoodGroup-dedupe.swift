@@ -1,6 +1,6 @@
 
 //
-//  MFoodGroup.swift
+//  MFoodGroup-dedupe.swift
 //
 // Copyright 2023  OpenAlloc LLC
 //
@@ -14,9 +14,9 @@ import CoreData
 import TrackerLib
 
 extension MFoodGroup {
-    internal static func dedupe(_ context: NSManagedObjectContext,
-                                categoryArchiveID: UUID,
-                                groupRaw: Int16) throws
+    static func dedupe(_ context: NSManagedObjectContext,
+                       categoryArchiveID: UUID,
+                       groupRaw: Int16) throws
     {
         let pred = getPredicate(categoryArchiveID: categoryArchiveID, groupRaw: groupRaw)
         let sort = byCreatedAt()

@@ -1,6 +1,6 @@
 
 //
-//  ZCategory.swift
+//  ZCategory-dedupe.swift
 //
 // Copyright 2023  OpenAlloc LLC
 //
@@ -14,7 +14,7 @@ import CoreData
 import TrackerLib
 
 extension ZCategory {
-    internal static func dedupe(_ context: NSManagedObjectContext, categoryArchiveID: UUID, inStore: NSPersistentStore) throws {
+    static func dedupe(_ context: NSManagedObjectContext, categoryArchiveID: UUID, inStore: NSPersistentStore) throws {
         let pred = getPredicate(categoryArchiveID: categoryArchiveID)
         let sort = byCreatedAt()
         var first: ZCategory?

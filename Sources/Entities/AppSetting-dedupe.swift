@@ -1,6 +1,6 @@
 
 //
-//  AppSetting.swift
+//  AppSetting-dedupe.swift
 //
 // Copyright 2023  OpenAlloc LLC
 //

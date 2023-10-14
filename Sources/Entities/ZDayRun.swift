@@ -29,7 +29,7 @@ public extension ZDayRun {
     }
 }
 
-internal extension ZDayRun {
+extension ZDayRun {
     /// Shallow copy of self to specified store, returning newly copied record (residing in dstStore).
     /// Does not delete self.
     /// Does NOT save context.

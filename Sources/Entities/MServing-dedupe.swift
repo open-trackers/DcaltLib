@@ -1,6 +1,6 @@
 
 //
-//  MServing.swift
+//  MServing-dedupe.swift
 //
 // Copyright 2022, 2023  OpenAlloc LLC
 //
@@ -14,7 +14,7 @@ import CoreData
 import TrackerLib
 
 extension MServing {
-    internal static func dedupe(_ context: NSManagedObjectContext, categoryArchiveID: UUID, servingArchiveID: UUID) throws {
+    static func dedupe(_ context: NSManagedObjectContext, categoryArchiveID: UUID, servingArchiveID: UUID) throws {
         let pred = getPredicate(categoryArchiveID: categoryArchiveID, servingArchiveID: servingArchiveID)
         let sort = byCreatedAt()
         var first: MServing?

@@ -1,6 +1,6 @@
 
 //
-//  ZServingRun.swift
+//  ZServingRun-dedupe.swift
 //
 // Copyright 2023  OpenAlloc LLC
 //
@@ -14,11 +14,11 @@ import CoreData
 import TrackerLib
 
 extension ZServingRun {
-    internal static func dedupe(_ context: NSManagedObjectContext,
-                                servingArchiveID: UUID,
-                                consumedDay: String,
-                                consumedTime: String,
-                                inStore: NSPersistentStore) throws
+    static func dedupe(_ context: NSManagedObjectContext,
+                       servingArchiveID: UUID,
+                       consumedDay: String,
+                       consumedTime: String,
+                       inStore: NSPersistentStore) throws
     {
         let pred = getPredicate(servingArchiveID: servingArchiveID,
                                 consumedDay: consumedDay,

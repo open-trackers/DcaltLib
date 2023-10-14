@@ -12,7 +12,7 @@ import CoreData
 
 import TrackerLib
 
-internal extension ZCategory {
+extension ZCategory {
     static func getPredicate(categoryArchiveID: UUID) -> NSPredicate {
         NSPredicate(format: "categoryArchiveID == %@", categoryArchiveID as NSUUID)
     }

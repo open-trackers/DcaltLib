@@ -1,6 +1,6 @@
 
 //
-//  ZDayRun.swift
+//  ZDayRun-dedupe.swift
 //
 // Copyright 2023  OpenAlloc LLC
 //
@@ -14,9 +14,9 @@ import CoreData
 import TrackerLib
 
 extension ZDayRun {
-    internal static func dedupe(_ context: NSManagedObjectContext,
-                                consumedDay: String,
-                                inStore: NSPersistentStore) throws
+    static func dedupe(_ context: NSManagedObjectContext,
+                       consumedDay: String,
+                       inStore: NSPersistentStore) throws
     {
         let pred = getPredicate(consumedDay: consumedDay)
         let sort = byCreatedAt()

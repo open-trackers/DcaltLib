@@ -66,9 +66,9 @@ public func transferToArchive(_ context: NSManagedObjectContext,
 /// Does not delete any records.
 /// Safe to run on a background context.
 /// Does NOT save context.
-internal func deepCopy(_ context: NSManagedObjectContext,
-                       fromStore srcStore: NSPersistentStore,
-                       toStore dstStore: NSPersistentStore) throws -> ([ZCategory], [ZDayRun])
+func deepCopy(_ context: NSManagedObjectContext,
+              fromStore srcStore: NSPersistentStore,
+              toStore dstStore: NSPersistentStore) throws -> ([ZCategory], [ZDayRun])
 {
     logger.debug("\(#function)")
     var copiedZCategories = [ZCategory]()

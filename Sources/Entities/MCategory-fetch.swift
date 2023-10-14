@@ -13,7 +13,7 @@ import CoreData
 
 import TrackerLib
 
-internal extension MCategory {
+extension MCategory {
     static func getPredicate(archiveID: UUID) -> NSPredicate {
         NSPredicate(format: "archiveID == %@", archiveID as NSUUID)
     }

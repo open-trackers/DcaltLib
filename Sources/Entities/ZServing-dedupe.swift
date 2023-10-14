@@ -1,6 +1,6 @@
 
 //
-//  ZServing.swift
+//  ZServing-dedupe.swift
 //
 // Copyright 2023  OpenAlloc LLC
 //
@@ -14,10 +14,10 @@ import CoreData
 import TrackerLib
 
 extension ZServing {
-    internal static func dedupe(_ context: NSManagedObjectContext,
-                                categoryArchiveID: UUID,
-                                servingArchiveID: UUID,
-                                inStore: NSPersistentStore) throws
+    static func dedupe(_ context: NSManagedObjectContext,
+                       categoryArchiveID: UUID,
+                       servingArchiveID: UUID,
+                       inStore: NSPersistentStore) throws
     {
         let pred = getPredicate(categoryArchiveID: categoryArchiveID, servingArchiveID: servingArchiveID)
         let sort = byCreatedAt()
